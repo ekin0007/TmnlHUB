@@ -1,4 +1,5 @@
 # WebStorm Project Config
+*.idea
 .idea
 
 # Logs
