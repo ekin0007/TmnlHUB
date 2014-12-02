@@ -5,21 +5,19 @@
  *    A1: 4103,                        //行政区划码
  *    A2: 123,                         //终端地址
  *    A3: 0,                           //主站地址和组地址标志
- *    APP: {                           //应用层
- *        AFN: 3,                      //AFN
- *        DU: [{                       //数据单元
- *            pn: 0,                   //pn
- *            DT: [{                    //信息类
- *                Fn: 10,              //Fn
- *                DATA: [],            //数据，具体格式参考协议规定，可赋值为各种数据类型
- *                retry: 1             //重发次数
- *            }]
- *        }],
- *        AUX: {                       //附加信息域
- *            PW: 0,                   //消息认证码字段（下行）
- *            EC: 1,                   //事件计数器（上行）
- *            Tp: '2014-10-10 10:10:10'//时间标签
- *        }
+ *    AFN: 3,                          //AFN
+ *    DU: [{                           //数据单元
+ *        pn: 0,                       //pn
+ *        DT: [{                        //信息类
+ *            Fn: 10,                  //Fn
+ *            DATA: [],                //数据，具体格式参考协议规定，可赋值为各种数据类型
+ *            retry: 1                 //重发次数
+ *        }]
+ *    }],
+ *    AUX: {                           //附加信息域
+ *        PW: 0,                       //消息认证码字段（下行）
+ *        EC: 1,                       //事件计数器（上行）
+ *        Tp: '2014-10-10 10:10:10'    //时间标签
  *    }
  * };
  * ----------------------------------------------------------------------------------------
@@ -31,12 +29,11 @@ var _ = require('underscore'),
 var format_json = function (str) {
         try {
             str = JSON.parse(str);
-            var json = {A1: str.A1, A2: str.A2, A3: 0, APP: str.APP};
-            json.APP.AFN = str.APP.AFN;
-            json.APP.DU = _.map(str.APP.DU, function (item) {
+            var json = {A1: str.A1, A2: str.A2, A3: 0, AFN: str.AFN};
+            json.DU = _.map(str.DU, function (item) {
                 return {
                     pn: item.pn,
-                    DT: _.map(item, function (dt) {
+                    DT: _.map(item.DT, function (dt) {
                         return {
                             Fn: dt.Fn,
                             DATA: dt.DATA,
@@ -45,15 +42,20 @@ var format_json = function (str) {
                     })
                 };
             });
-            json.APP.AUX = str.APP.AUX;
+            json.AUX = str.AUX;
             return json;
         } catch (err) {
             throw 'JSON格式错误';
         }
     },
 
-    json_hex = function (json) {
-        return _698.json_hex(json);
+    json_hex = function (json, seq) {
+        try {
+            json.seq = seq;
+            return _698.json_hex(json);
+        } catch (err) {
+            throw '无法找到对应的协议';
+        }
     };
 
 exports.handler = function (req, res) {
@@ -63,7 +65,8 @@ exports.handler = function (req, res) {
         if (!tmnl) {
             throw '无法找到对应的设备';
         } else {
-            var hex = json_hex(json);
+            var hex = json_hex(json, tmnl.seq);
+            console.log(hex);
         }
     } catch (err) {
         res.send(err);

@@ -59,5 +59,50 @@ exports.tools = {
             }
         }
         return false;
+    },
+
+    //返回 信息点标识。
+    getPn: function (data, h) {
+        var i = 0, da1 = (h !== undefined ? data : data[14]), da2 = (h !== undefined ? h : data[15]);
+        if (da1 == 0 && da2 == 0) return 0;
+        while (da1 > 1) {
+            i++;
+            da1 = Math.floor(da1 / 2);
+        }
+        return (da2 - 1) * 8 + i + 1;
+    },
+
+    //返回 信息类标识。
+    getFn: function (data, h) {
+        var i = 0, dt1 = (h !== undefined ? data : data[16]), dt2 = (h !== undefined ? h : data[17]);
+        while (dt1 > 1) {
+            i++;
+            dt1 = Math.floor(dt1 / 2);
+        }
+        return dt2 * 8 + i + 1;
+    },
+
+    setPn: function (pn) {
+        var da1 = 0, da2 = 0;
+        if (pn != 0) {
+            da1 = 1;
+            for (var j = 0; j < (pn - 1) % 8; j++)
+                da1 *= 2;
+            da2 = Math.floor((pn - 1) / 8) + 1;
+        }
+        return [da1, da2];
+    },
+
+    setFn: function (fn) {
+        var dt1, dt2;
+        if (0 == fn) {
+            dt1 = dt2 = 0;
+        } else {
+            dt1 = 1;
+            for (var i = 0; i < (fn - 1) % 8; i++)
+                dt1 *= 2;
+            dt2 = Math.floor((fn - 1) / 8);
+        }
+        return [dt1, dt2];
     }
 };
