@@ -118,5 +118,19 @@ exports.tools = {
             dt2 = Math.floor((fn - 1) / 8);
         }
         return [dt1, dt2];
+    },
+
+    getSEQ: function (data) {
+        return data[13] & 0x0f;
+    },
+    
+    //返回 传输方向位。DIR=0：表示此帧报文是由主站发出的下行报文；	DIR=1：表示此帧报文是由终端发出的上行报文。
+    getDIR: function (data) {
+        return data[6] >> 7;
+    },
+
+    //返回 启动标志位。PRM =1：表示此帧报文来自启动站；PRM =0：表示此帧报文来自从动站。
+    getPRM: function (data) {
+        return (data[6] >> 6) % 2;
     }
 };

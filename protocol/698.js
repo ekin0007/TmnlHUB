@@ -67,11 +67,8 @@ var json_hex = {
     },
 
     set_seq = function (json) {
-        var afn = json.AFN, tpv = 0, fir = 1, fin = 1, con = 0, seq = json.seq || 0;
-        if (_.has([4, 5, 15], afn)) {
-            con = 1;
-        }
-        seq = seq >= 15 ? 0 : seq++;
+        var afn = json.AFN, tpv = 0, fir = 1, fin = 1, con = 0, seq = json.seq;
+        if (_.has([4, 5, 15], afn)) con = 1;
         return [(parseInt('' + tpv + fir + fin + con, 2) << 4) + seq];
     },
 
@@ -107,6 +104,8 @@ exports.json_hex = function (json) {
     });
     app = [].concat(c, addr, afn, seq, app, pwd);
     hex = hex.concat(0x68, set_len(app), 0x68, app, set_cs(app), set_end());
-    return hex;
+    return new Buffer(hex);
 };
-exports.hex_json = hex_json;
+exports.hex_json = function (hex) {
+    return {};
+};

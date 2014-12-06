@@ -24,10 +24,9 @@
  */
 var _ = require('underscore'),
     tmnl_mgr = require('../tmnl/tmnl_manager'),
-    _698 = require('../protocol/698'),
     tools = require('../tools').tools;
 
-var format_json = function (str) {
+var format_json = function (str, seq) {
         try {
             str = JSON.parse(str);
             var json = {A1: str.A1, A2: str.A2, A3: 0, AFN: str.AFN, C: {DIR: 0, PRM: 1, FCB: 0, FCV: 0}};
@@ -50,13 +49,9 @@ var format_json = function (str) {
         }
     },
 
-    json_hex = function (json, seq) {
-        try {
-            json.seq = seq;
-            return _698.json_hex(json);
-        } catch (err) {
-            throw '无法找到对应的协议';
-        }
+    set_seq = function (seq) {
+        if (!seq) seq = 0;
+        return seq >= 15 ? 0 : seq++;
     };
 
 exports.handler = function (req, res) {
@@ -66,8 +61,15 @@ exports.handler = function (req, res) {
         if (!tmnl) {
             throw '无法找到对应的设备';
         } else {
-            var hex = json_hex(json, tmnl.seq);
-            console.log(tools.hex_str(hex));
+            try {
+                tmnl.seq = set_seq(tmnl.seq);
+                json.seq = tmnl.seq;
+                tmnl.pkt_mgr.req(json, function (err) {
+                    res.send(err || 'what the fuck?');
+                });
+            } catch (err) {
+                res.send(err);
+            }
         }
     } catch (err) {
         res.send(err);
