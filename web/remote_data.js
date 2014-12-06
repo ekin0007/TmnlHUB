@@ -24,12 +24,13 @@
  */
 var _ = require('underscore'),
     tmnl_mgr = require('../tmnl/tmnl_manager'),
-    _698 = require('../protocol/698');
+    _698 = require('../protocol/698'),
+    tools = require('../tools').tools;
 
 var format_json = function (str) {
         try {
             str = JSON.parse(str);
-            var json = {A1: str.A1, A2: str.A2, A3: 0, AFN: str.AFN};
+            var json = {A1: str.A1, A2: str.A2, A3: 0, AFN: str.AFN, C: {DIR: 0, PRM: 1, FCB: 0, FCV: 0}};
             json.DU = _.map(str.DU, function (item) {
                 return {
                     pn: item.pn,
@@ -42,7 +43,7 @@ var format_json = function (str) {
                     })
                 };
             });
-            json.AUX = str.AUX;
+            json.AUX = str.AUX || {};
             return json;
         } catch (err) {
             throw 'JSON格式错误';
@@ -66,7 +67,7 @@ exports.handler = function (req, res) {
             throw '无法找到对应的设备';
         } else {
             var hex = json_hex(json, tmnl.seq);
-            console.log(hex);
+            console.log(tools.hex_str(hex));
         }
     } catch (err) {
         res.send(err);
