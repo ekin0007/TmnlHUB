@@ -10,6 +10,20 @@ exports.tools = {
         return str;
     },
 
+    hex_str: function (data) {
+        if (Buffer.isBuffer(data)) {
+            data = data.toJSON();
+        }
+        if (_.isArray(data)) {
+            var tools = this, str = _.map(data, function (item) {
+                return tools.zerofill(item.toString(16).toUpperCase(), 2);
+            });
+            return str.join(' ');
+        } else {
+            throw 'data不是Buffer或者Array';
+        }
+    },
+
     bcd2b: function (bcd) {
         //hex to dec
         return Math.floor((bcd / 16)) * 10 + bcd % 16;
