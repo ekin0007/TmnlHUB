@@ -13,6 +13,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(multer());
 
+app.use('/html', express.static(path.join(__dirname, '/web/html')));
+app.use('/sdk', express.static(path.join(__dirname, '/web/sdk')));
+app.use('/js', express.static(path.join(__dirname, '/web/js')));
+app.use('/css', express.static(path.join(__dirname, '/web/css')));
+
+app.all(['/'], function (req, res) {
+    res.sendFile(__dirname + '/web/html/index.html');
+});
+
 app.all(['/help'], function (req, res) {
     res.send('返回帮助信息');
 });
