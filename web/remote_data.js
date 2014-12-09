@@ -26,44 +26,14 @@ var _ = require('underscore'),
     tmnl_mgr = require('../tmnl/tmnl_manager'),
     tools = require('../tools').tools;
 
-var format_json = function (str, seq) {
-        try {
-            str = JSON.parse(str);
-            var json = {A1: str.A1, A2: str.A2, A3: 0, AFN: str.AFN, C: {DIR: 0, PRM: 1, FCB: 0, FCV: 0}};
-            json.DU = _.map(str.DU, function (item) {
-                return {
-                    pn: item.pn,
-                    DT: _.map(item.DT, function (dt) {
-                        return {
-                            Fn: dt.Fn,
-                            DATA: dt.DATA,
-                            retry: dt.retry || 0
-                        }
-                    })
-                };
-            });
-            json.AUX = str.AUX || {};
-            return json;
-        } catch (err) {
-            throw 'JSON格式错误';
-        }
-    },
-
-    set_seq = function (seq) {
-        if (!seq) seq = 0;
-        return seq >= 15 ? 0 : seq++;
-    };
-
 exports.handler = function (req, res) {
     try {
-        var json = format_json(req.body.json),
+        var json = tools.format_json(req.body.json),
             A1 = json.A1, A2 = json.A2, sid = A1 + '@' + A2, tmnl = tmnl_mgr.get(sid);
         if (!tmnl) {
             throw '无法找到对应的设备';
         } else {
             try {
-                tmnl.seq = set_seq(tmnl.seq);
-                json.seq = tmnl.seq;
                 tmnl.pkt_mgr.req(json, function (err) {
                     res.send(err || 'what the fuck?');
                 });

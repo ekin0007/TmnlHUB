@@ -55,12 +55,12 @@ var tmnl_list = {},
     },
 
     on_data = function (data) {
-        if (this.pkt_mgr) {
-            //TODO 传入对象，包括data和callback
-            this.pkt_mgr.recv(data);
-        } else {
-            //TODO 先检查报文合法性，非法报文并且未登录，回否认帧
-            if (tools.data_invalid(data)) {
+        //TODO 先检查报文合法性，非法报文并且未登录，回否认帧
+        if (tools.data_invalid(data)) {
+            if (this.pkt_mgr) {
+                //TODO 传入对象，包括data和callback
+                this.pkt_mgr.recv(data);
+            } else {
                 var sid = get_sid(data), old = undefined;
                 if (is_exist(sid) == true) {
                     old = getSocket(sid);
@@ -69,9 +69,11 @@ var tmnl_list = {},
                 this.sid = sid;
                 this.pkt_mgr = new tmnl_pkt_mgr(this);
                 tmnl_list[sid] = this;
-            } else {
-                this.destroy();
+                this.pkt_mgr.recv(data);
             }
+        } else {
+            //TODO 如果有A1和A2，错误的报文也写入日志
+            this.destroy();
         }
     },
 

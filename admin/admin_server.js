@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(multer());
 
-app.all(['/', '/help'], function (req, res) {
+app.all(['/help'], function (req, res) {
     res.send('返回帮助信息');
 });
 

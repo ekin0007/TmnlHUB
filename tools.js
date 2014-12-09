@@ -1,6 +1,32 @@
 var _ = require('underscore');
 
 exports.tools = {
+    format_json: function (str) {
+        try {
+            str = _.isObject(str) ? str : JSON.parse(str);
+            var json = {
+                A1: str.A1, A2: str.A2, A3: str.A3 || 0, AFN: str.AFN,
+                C: str.C || {DIR: 0, PRM: 1, FCB: 0, FCV: 0}
+            };
+            json.DU = _.map(str.DU, function (item) {
+                return {
+                    pn: item.pn,
+                    DT: _.map(item.DT, function (dt) {
+                        return {
+                            Fn: dt.Fn,
+                            DATA: dt.DATA || [],
+                            retry: dt.retry || 0
+                        }
+                    })
+                };
+            });
+            json.AUX = str.AUX || {};
+            return json;
+        } catch (err) {
+            throw 'JSON格式错误';
+        }
+    },
+
     zerofill: function (str, len) {
         str = str.toString();
         len = len || 12;
@@ -123,7 +149,7 @@ exports.tools = {
     getSEQ: function (data) {
         return data[13] & 0x0f;
     },
-    
+
     //返回 传输方向位。DIR=0：表示此帧报文是由主站发出的下行报文；	DIR=1：表示此帧报文是由终端发出的上行报文。
     getDIR: function (data) {
         return data[6] >> 7;
@@ -132,5 +158,10 @@ exports.tools = {
     //返回 启动标志位。PRM =1：表示此帧报文来自启动站；PRM =0：表示此帧报文来自从动站。
     getPRM: function (data) {
         return (data[6] >> 6) % 2;
+    },
+
+    //返回 请求确认标志位。CON位置“1”，表示需要对该帧报文进行确认；置“0”，表示不需要对该帧报文进行确认。
+    getCON: function (data) {
+        return (data[13] >> 4) % 2;
     }
 };

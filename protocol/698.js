@@ -2,7 +2,14 @@ var _ = require('underscore'),
     tools = require('../tools').tools;
 
 var json_hex = {
-        AFN0: {},
+        AFN0: {
+            Fn1: function () {
+                return [];
+            },
+            Fn2: function () {
+                return [];
+            }
+        },
         AFN1: {},
         AFN2: {},
         AFN3: {},
@@ -26,7 +33,11 @@ var json_hex = {
     hex_json = {
         AFN0: {},
         AFN1: {},
-        AFN2: {},
+        AFN2: {
+            Fn1: function () {
+                //确认帧
+            }
+        },
         AFN3: {},
         AFN4: {},
         AFN5: {},
@@ -67,7 +78,7 @@ var json_hex = {
     },
 
     set_seq = function (json) {
-        var afn = json.AFN, tpv = 0, fir = 1, fin = 1, con = 0, seq = json.seq;
+        var afn = json.AFN, tpv = 0, fir = 1, fin = 1, con = 0, seq = json.seq || 0;
         if (_.has([4, 5, 15], afn)) con = 1;
         return [(parseInt('' + tpv + fir + fin + con, 2) << 4) + seq];
     },
