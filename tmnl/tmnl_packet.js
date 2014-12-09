@@ -33,6 +33,7 @@ var get_seq = function (seq) {
         _.each(opts, function (item, index) {
             _self[index] = item;
         });
+        if (this.hex) console.log(tools.hex_str(this.hex));
     };
 
 util.inherits(packet, events.EventEmitter);
@@ -78,6 +79,7 @@ packet.prototype.send = function () {
         buff = json_hex(this.json);
     }
     this.socket.seq = seq;
+    console.log(tools.hex_str(buff));
     this.socket.write(buff, function () {
         _self.timeout();
     });
