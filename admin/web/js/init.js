@@ -3,18 +3,12 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [{
-            region: 'west',
-            collapsible: false,
-            title: 'Navigation', border: true,
-            width: 300
-            // could use a TreePanel or AccordionLayout for navigational items
+            region: 'west', collapsible: false, border: true,
+            width: 300, layout: 'fit', items: Ext.create('js.maintree')
         }, {
-            region: 'center',
-            xtype: 'tabpanel', // TabPanel itself has no title
-            activeTab: 0,      // First tab active by default
+            region: 'center', xtype: 'tabpanel', activeTab: 0, id: 'main_tabpanel',
             items: [{
-                title: 'Dashboard', closable: false,
-                html: 'The first tab\'s content. Others may be added dynamically'
+                title: 'Dashboard', closable: false, items: Ext.create('js.dash')
             }]
         }]
     });
