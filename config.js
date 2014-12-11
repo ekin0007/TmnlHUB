@@ -7,7 +7,7 @@ var sec = 1000, min = 60 * sec, hr = 60 * min,
     sys_config = {
         tmnl_port: 5805,
         tmnl_delay_timeout: 0,
-        tmnl_recv_timeout: 3 * sec,
+        tmnl_recv_timeout: 10 * sec,
 
         web_port: 2355,
 

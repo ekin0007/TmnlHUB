@@ -8,17 +8,17 @@
  *    AFN: 3,                          //AFN
  *    DU: [{                           //数据单元
  *        pn: 0,                       //pn
- *        DT: [{                        //信息类
+ *        DT: [{                       //信息类
  *            Fn: 10,                  //Fn
- *            DATA: [],                //数据，具体格式参考协议规定，可赋值为各种数据类型
- *            retry: 1                 //重发次数
+ *            DATA: []                 //数据，具体格式参考协议规定，可赋值为各种数据类型
  *        }]
  *    }],
  *    AUX: {                           //附加信息域
  *        PW: 0,                       //消息认证码字段（下行）
  *        EC: 1,                       //事件计数器（上行）
  *        Tp: '2014-10-10 10:10:10'    //时间标签
- *    }
+ *    },
+ *    retry: 1                         //重发次数
  * };
  * ----------------------------------------------------------------------------------------
  */
@@ -34,8 +34,8 @@ exports.handler = function (req, res) {
             throw '无法找到对应的设备';
         } else {
             try {
-                tmnl.pkt_mgr.req(json, function (err) {
-                    res.send(err || 'what the fuck?');
+                tmnl.pkt_mgr.req(json, function (err, data) {
+                    res.send(err || data);
                 });
             } catch (err) {
                 res.send(err);

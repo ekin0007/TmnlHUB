@@ -1,12 +1,39 @@
 var _ = require('underscore');
 
 exports.tools = {
+
+    //通用确认帧
+    confirm: function (data) {
+        return this.format_json({
+            A1: this.getA1(data),
+            A2: this.getA2(data),
+            AFN: 0x00, seq: this.getSEQ(data),
+            C: {DIR: 0, PRM: 0, FCB: 0, FCV: 0},
+            DU: [{pn: 0, DT: [{Fn: 1}]}]
+        });
+    },
+
+    //通用否认帧
+    negate: function (data) {
+        return this.format_json({
+            A1: this.getA1(data),
+            A2: this.getA2(data),
+            AFN: 0x00, seq: this.getSEQ(data),
+            C: {DIR: 0, PRM: 0, FCB: 0, FCV: 0},
+            DU: [{pn: 0, DT: [{Fn: 2}]}]
+        });
+    },
+
+    seq: function (seq) {
+        return seq >= 15 ? 0 : seq++;
+    },
+
     format_json: function (str) {
         try {
             str = _.isObject(str) ? str : JSON.parse(str);
             var json = {
                 A1: str.A1, A2: str.A2, A3: str.A3 || 0, AFN: str.AFN,
-                C: str.C || {DIR: 0, PRM: 1, FCB: 0, FCV: 0}
+                C: str.C || {DIR: 0, PRM: 1, FCB: 0, FCV: 0}, seq: str.seq || 0
             };
             json.DU = _.map(str.DU, function (item) {
                 return {
@@ -14,13 +41,13 @@ exports.tools = {
                     DT: _.map(item.DT, function (dt) {
                         return {
                             Fn: dt.Fn,
-                            DATA: dt.DATA || [],
-                            retry: dt.retry || 0
+                            DATA: dt.DATA || []
                         }
                     })
                 };
             });
             json.AUX = str.AUX || {};
+            json.retry = str.retry || 0;
             return json;
         } catch (err) {
             throw 'JSON格式错误';
