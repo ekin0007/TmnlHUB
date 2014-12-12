@@ -1,6 +1,6 @@
 /**
  * 终端通讯数据包
- *
+ * 负责接收和发送数据
  *
  */
 var util = require('util'),
@@ -49,10 +49,9 @@ var packet = function (opts) {
 util.inherits(packet, events.EventEmitter);
 
 /**
- * 自动重发
+ * 重发
  */
 packet.prototype.on('timeout', function () {
-    console.log('onTimeout');
     this.retry_times++;
     if (this.json.retry > 0 && this.retry_times <= this.json.retry) {
         console.log('第' + this.retry_times + '/' + this.json.retry + '次重发');
@@ -67,17 +66,14 @@ packet.prototype.on('timeout', function () {
 });
 
 packet.prototype.on('recv', function (hex) {
-    console.log('recv', hex);
     this.emit('end', null, tools.hex_str(hex));
 });
 
 packet.prototype.on('send', function (buff) {
-    console.log('send', buff);
 });
 
 packet.prototype.on('end', function (err, data) {
     if (err) {
-        console.log('Packet Error', err);
     } else if (this.cb) {
         this.cb.call(null, err, data);
     }
@@ -106,11 +102,9 @@ packet.prototype.send = function (cb) {
     }
     this.socket.write(buff, function () {
         if (_self.dir && _self.prm) {
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             _self.emit('end', null);
         } else {
             _self.timeout();
-            console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         }
     });
     if (cb) cb.call(null, null, this);

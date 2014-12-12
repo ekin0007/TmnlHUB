@@ -50,7 +50,7 @@ pkt_manager.prototype.recv = function (hex) {
         if (packet) {
             packet.recv(hex);
         } else {
-            console.log('收到终端响应数据，但是没找到对应SEQ的数据包');
+            //收到终端响应数据，但是没找到对应SEQ的数据包;
             this.emit('unlock');
         }
     }
