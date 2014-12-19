@@ -47,15 +47,16 @@ var json_hex = {
         AFN10: {},
         AFN11: {},
         AFN12: {
-            Fn2: function (data) {
+            Fn21: function (data) {
                 //TODO 如何取数组的值？shift？splice？还是自己指定长度，像3.0里面的一样？
+                var arr = data.splice(0, 6);
                 return {
-                    second: tools.bcd2b(data[0]),
-                    minute: tools.bcd2b(data[1]),
-                    hour: tools.bcd2b(data[2]),
-                    day: tools.bcd2b(data[3]),
-                    month: ((data[4] >> 4) % 2) * 10 + data[4] % 16,
-                    year: tools.bcd2b(data[5])
+                    second: tools.bcd2b(arr[0]),
+                    minute: tools.bcd2b(arr[1]),
+                    hour: tools.bcd2b(arr[2]),
+                    day: tools.bcd2b(arr[3]),
+                    month: ((arr[4] >> 4) % 2) * 10 + arr[4] % 16,
+                    year: tools.bcd2b(arr[5])
                 };
             }
         },
@@ -281,7 +282,6 @@ exports.hex_json = function (hex) {
         pn = getPn(pn[0], pn[1]);
         fn = getFn(fn[0], fn[1]);
         var data = hex_json['AFN' + json.AFN]['Fn' + fn](du);
-        console.log(data);
-        break;
+        console.log(data, du);
     }
 };
