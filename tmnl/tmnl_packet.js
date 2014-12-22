@@ -12,12 +12,16 @@ var util = require('util'),
     _698 = require('../protocol/698');
 
 var json_hex = function (json) {
-    try {
-        return _698.json_hex(json);
-    } catch (err) {
-        throw '无法找到对应的协议';
-    }
-};
+        try {
+            return _698.json_hex(json);
+        } catch (err) {
+            throw '无法找到对应的协议';
+        }
+    },
+
+    now = function () {
+        return moment().format('YYYY-MM-DD HH:mm:ss');
+    };
 
 /**
  * 构造函数
@@ -30,7 +34,7 @@ var packet = function (opts) {
     events.EventEmitter.call(this);
     this.timer = null;//计时器
     this.retry_times = 0;//重发次数
-    this.log = {
+    this.output = {
         REQ: null,
         RES: null,
         DEBUG: {
@@ -43,9 +47,9 @@ var packet = function (opts) {
         _self[index] = item;
     });
     if (this.hex) {
-        this.log.REQ = tools.hex_str(this.hex);
+        this.output.REQ = tools.hex_str(this.hex);
     } else {
-        this.log.DEBUG.REQ.json = this.json;
+        this.output.DEBUG.REQ.json = this.json;
     }
 
     this.set_seq = function (seq) {
@@ -68,24 +72,25 @@ packet.prototype.on('timeout', function () {
         console.log('第' + this.retry_times + '/' + this.json.retry + '次重发');
         this.send();
     } else {
-        this.emit('end', null, '通讯超时，共重发' + (this.retry_times - 1) + '次');
+        this.emit('end', '通讯超时，共重发' + (this.retry_times - 1) + '次');
     }
 });
 
-packet.prototype.on('recv', function (hex) {
-    this.emit('end', null, tools.hex_str(hex));
+packet.prototype.on('recv', function (err, data) {
+    this.emit('end', err, data);
 });
 
 packet.prototype.on('send', function (buff) {
 });
 
 packet.prototype.on('end', function (err, data) {
-    if (err) {
-    } else if (this.cb) {
-        this.cb.call(null, err, data);
-    }
-    console.log(util.format('%j', this.log));
     clearTimeout(this.timer);
+    if (this.cb) this.cb.call(null, err, this.output);
+    //if (err) {
+    //} else if (this.cb) {
+    //    this.cb.call(null, err, data);
+    //}
+    console.log(util.format('%j', this.output));
 });
 
 packet.prototype.timeout = function () {
@@ -95,36 +100,44 @@ packet.prototype.timeout = function () {
 };
 
 packet.prototype.recv = function (hex) {
-    var json = _698.hex_json(hex);
-    //this.log.DEBUG.REQ.json = json;
-    //this.log.DEBUG.REQ.date = moment().format('YYYY-MM-DD HH:mm:ss');
-    this.emit('recv', hex);
+    var err = null;
+    try {
+        this.output.RES = tools.hex_str(hex);
+        this.output.DEBUG.RES = {buff: this.output.RES, json: _698.hex_json(hex), data: now()};
+    } catch (e) {
+        err = e;
+    }
+    this.emit('recv', err, this.output);
 };
 
 packet.prototype.send = function (cb) {
-    var _self = this, buff;
-    if (this.dir && this.prm) {
-        var json = tools.confirm(this.hex);
-        buff = json_hex(json);
-        this.log.REQ = tools.hex_str(this.hex);
-        this.log.RES = tools.hex_str(buff);
-        this.log.DEBUG.REQ.buff = this.log.REQ;
-        this.log.DEBUG.RES = {buff: tools.hex_str(buff), json: json, date: moment().format('YYYY-MM-DD HH:mm:ss')};
-    } else {
-        this.json.seq = this.get_seq();
-        buff = json_hex(this.json);
-        this.log.REQ = tools.hex_str(buff);
-        this.log.DEBUG.REQ = {buff: this.log.REQ, json: this.json, date: moment().format('YYYY-MM-DD HH:mm:ss')};
-    }
-    this.socket.write(buff, function () {
-        if (_self.dir && _self.prm) {
-            _self.emit('end', null);
+    try {
+        var _self = this, buff;
+        if (this.dir && this.prm) {
+            var json = tools.confirm(this.hex);
+            buff = json_hex(json);
+            this.output.REQ = tools.hex_str(this.hex);
+            this.output.RES = tools.hex_str(buff);
+            this.output.DEBUG.REQ = {buff: this.output.REQ, json: _698.hex_json(this.hex), date: now()};
+            this.output.DEBUG.RES = {buff: tools.hex_str(buff), json: json, date: now()};
         } else {
-            _self.timeout();
+            this.json.seq = this.get_seq();
+            buff = json_hex(this.json);
+            this.output.REQ = tools.hex_str(buff);
+            this.output.DEBUG.REQ = {buff: this.output.REQ, json: this.json, date: now()};
         }
-    });
-    if (cb) cb.call(null, null, this);
-    this.emit('send', buff);
+        this.socket.write(buff, function () {
+            if (_self.dir && _self.prm) {
+                _self.emit('end', null);
+            } else {
+                _self.timeout();
+            }
+        });
+        if (cb) cb.call(null, null, this);
+        this.emit('send', buff);
+    } catch (err) {
+        this.emit('end', err);
+    }
 };
 
 exports.packet = packet;

@@ -34,8 +34,9 @@ var json_hex = {
         AFN0: {},
         AFN1: {},
         AFN2: {
+            //登录帧
             Fn1: function (data) {
-                //确认帧
+
             }
         },
         AFN3: {},
@@ -47,7 +48,7 @@ var json_hex = {
         AFN10: {},
         AFN11: {},
         AFN12: {
-            Fn21: function (data) {
+            Fn2: function (data) {
                 //TODO 如何取数组的值？shift？splice？还是自己指定长度，像3.0里面的一样？
                 var arr = data.splice(0, 6);
                 return {
@@ -266,22 +267,35 @@ exports.json_hex = function (json) {
  * };
  */
 exports.hex_json = function (hex) {
-    var json = {
-        L: getL1(hex),
-        A1: getA1(hex),
-        A2: getA2(hex),
-        A3: 0,
-        C: {dir: getDIR(hex), prm: getPRM(hex), acd: getACD(hex), cfn: getCFN(hex)},
-        AFN: getAFN(hex),
-        SEQ: {tpv: getTpV(hex), fir: getFIR(hex), fin: getFIN(hex), con: getCON(hex), seq: getSEQ(hex)},
-        AUX: getAUX(hex)
-    }, du = getDU(hex);
-    while (du.length > 0) {
-        var pn = du.splice(0, 2), fn = du.splice(0, 2);
-        if (pn.length < 2 || fn.length < 2) break;
-        pn = getPn(pn[0], pn[1]);
-        fn = getFn(fn[0], fn[1]);
-        var data = hex_json['AFN' + json.AFN]['Fn' + fn](du);
-        console.log(data, du);
+    try {
+        var json = {
+            L: getL1(hex),
+            A1: getA1(hex),
+            A2: getA2(hex),
+            A3: 0,
+            C: {dir: getDIR(hex), prm: getPRM(hex), acd: getACD(hex), cfn: getCFN(hex)},
+            AFN: getAFN(hex),
+            SEQ: {tpv: getTpV(hex), fir: getFIR(hex), fin: getFIN(hex), con: getCON(hex), seq: getSEQ(hex)},
+            AUX: getAUX(hex),
+            DU: []
+        }, du = getDU(hex);
+        while (du.length > 0) {
+            var pn = du.splice(0, 2), fn = du.splice(0, 2);
+            if (pn.length < 2 || fn.length < 2) break;
+            pn = getPn(pn[0], pn[1]);
+            fn = getFn(fn[0], fn[1]);
+            var data = hex_json['AFN' + json.AFN]['Fn' + fn](du) || null,
+                isPn = _.find(json.DU, function (item) {
+                    return item.pn == pn;
+                });
+            if (!isPn) {
+                json.DU.push({pn: pn, DT: [{Fn: fn, DATA: data}]});
+            } else {
+                isPn.DT.push({Fn: fn, DATA: data});
+            }
+        }
+        return json;
+    } catch (err) {
+        return err;
     }
 };
