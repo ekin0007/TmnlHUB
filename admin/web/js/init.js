@@ -12,7 +12,7 @@ Ext.onReady(function () {
         alert('Fuck');
     });
 
-    Ext.BLANK_IMAGE_URL = 'sdk/ext-5.0.1/welcome/css/blank.gif';
+    Ext.BLANK_IMAGE_URL = 'sdk/ext-5.0.1/build/blank.gif';
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
