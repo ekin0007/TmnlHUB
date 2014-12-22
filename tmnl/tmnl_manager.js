@@ -5,7 +5,8 @@ var _ = require('underscore'),
     log = require('../sys_log'),
     config = require('../config').config,
     tmnl_pkt_mgr = require('./tmnl_pkt_mgr').pkt_mgr,
-    tools = require('../tools').tools;
+    tools = require('../tools').tools,
+    admin_server = require('../admin/admin_server').io;
 
 //已连接的终端列表
 var tmnl_list = {},
@@ -70,6 +71,7 @@ var tmnl_list = {},
                 this.pkt_mgr = new tmnl_pkt_mgr(this);
                 tmnl_list[sid] = this;
                 this.pkt_mgr.recv(data);
+                admin_server.emit('tmnlLogin', get_size());
             }
         } else {
             //TODO 如果有A1和A2，错误的报文也写入日志
@@ -109,6 +111,7 @@ var tmnl_list = {},
         } else {
             delete this;
         }
+        admin_server.emit('tmnlLogin', get_size());
     };
 
 exports.push = push;

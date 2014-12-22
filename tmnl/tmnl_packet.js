@@ -25,10 +25,6 @@ var json_hex = function (json) {
 
 /**
  * 构造函数
- *
- *
- *
- *
  */
 var packet = function (opts) {
     events.EventEmitter.call(this);

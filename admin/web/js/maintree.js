@@ -7,16 +7,16 @@ Ext.define('js.maintree', {
                     text: 'Dashboard',
                     expanded: true,
                     children: [{
-                        text: 'Child 1',
+                        text: '历史日志',
                         leaf: true
                     }, {
-                        text: 'Child 2',
+                        text: '实时监控',
                         leaf: true
                     }, {
-                        text: 'Child 3',
+                        text: '报文解析',
                         leaf: true
                     }, {
-                        text: 'Child 4',
+                        text: '操作记录',
                         leaf: true
                     }]
                 }
