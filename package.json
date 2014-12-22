@@ -1,0 +1,32 @@
+{
+  "name": "TmnlHUB",
+  "version": "1.0.0",
+  "description": "TmnlHUB\r =======",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "moment": "^2.8.4",
+    "express": "^4.10.6",
+    "multer": "^0.1.6",
+    "sqlite3": "^3.0.4",
+    "socket.io": "^1.2.1",
+    "body-parser": "^1.10.0",
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baiej214/TmnlHUB.git"
+  },
+  "author": "Rango",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baiej214/TmnlHUB/issues"
+  },
+  "homepage": "https://github.com/baiej214/TmnlHUB"
+}
