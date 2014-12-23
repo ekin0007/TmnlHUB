@@ -19,7 +19,7 @@ var getPosition = function (stack) {
     },
 
     cError = function (err, name) {
-        var error = {};
+        var error = {error: true};
         if (err instanceof Error) {
             error.name = err.name;
             error.message = err.message;
@@ -30,6 +30,7 @@ var getPosition = function (stack) {
             error.name = name || 'Error';
             error.message = err;
         }
+        //TODO 是否记录错误日志？
         return error;
     };
 
