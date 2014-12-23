@@ -135,7 +135,7 @@ exports.tools = {
     },
 
     set_addr: function (a1, a2, a3) {
-        return [tools.b2bcd(a1 % 100), tools.b2bcd(Math.floor(a1 / 100)), a2 % 256, Math.floor(a2 / 256), a3];
+        return [this.b2bcd(a1 % 100), this.b2bcd(Math.floor(a1 / 100)), a2 % 256, Math.floor(a2 / 256), a3];
     },
 
     set_seq: function (json) {
@@ -166,7 +166,7 @@ exports.tools = {
     },
 
     getA1: function (data) {
-        return tools.bcd2b(data[8]) * 100 + tools.bcd2b(data[7]);
+        return this.bcd2b(data[8]) * 100 + this.bcd2b(data[7]);
     },
 
     getA2: function (data) {
@@ -254,10 +254,10 @@ exports.tools = {
             AUX.PFC = data[data.length - 8];//启动帧帧序号计数器PFC
             var PST = data.slice(data.length - 7, data.length - 3);//启动帧发送时标PST
             AUX.PST = {
-                sec: tools.bcd2b(PST[0]),
-                min: tools.bcd2b(PST[1]),
-                hour: tools.bcd2b(PST[2]),
-                date: tools.bcd2b(PST[3])
+                sec: this.bcd2b(PST[0]),
+                min: this.bcd2b(PST[1]),
+                hour: this.bcd2b(PST[2]),
+                date: this.bcd2b(PST[3])
             };
             AUX.SD = data[data.length - 3];//允许发送传输延时时间SD
         }

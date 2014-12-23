@@ -6,6 +6,7 @@ var _ = require('underscore'),
     config = require('../config').config,
     tmnl_pkt_mgr = require('./tmnl_pkt_mgr').pkt_mgr,
     tools = require('../tools').tools,
+    cError = require('../error').Error,
     admin_server = require('../admin/admin_server').io;
 
 //已连接的终端列表
@@ -52,7 +53,7 @@ var tmnl_list = {},
     },
 
     on_connect = function () {
-        console.log('on_connect');
+        //do sth when socket connected
     },
 
     on_data = function (data) {

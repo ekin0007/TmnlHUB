@@ -1,4 +1,5 @@
 var _ = require('underscore'),
+    cError = require('../error').Error,
     tools = require('../tools').tools;
 
 var json_hex = {
@@ -135,6 +136,6 @@ exports.hex_json = function (hex) {
         }
         return json;
     } catch (err) {
-        return err;
+        return cError(err);
     }
 };

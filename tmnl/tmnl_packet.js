@@ -9,6 +9,7 @@ var util = require('util'),
     moment = require('moment'),
     config = require('../config').config,
     tools = require('../tools').tools,
+    cError = require('../error').Error,
     _698 = require('../protocol/698');
 
 var json_hex = function (json) {
@@ -79,13 +80,9 @@ packet.prototype.on('recv', function (err, data) {
 packet.prototype.on('send', function (buff) {
 });
 
-packet.prototype.on('end', function (err, data) {
+packet.prototype.on('end', function (err) {
     clearTimeout(this.timer);
     if (this.cb) this.cb.call(null, err, this.output);
-    //if (err) {
-    //} else if (this.cb) {
-    //    this.cb.call(null, err, data);
-    //}
     console.log(util.format('%j', this.output));
 });
 
@@ -103,7 +100,7 @@ packet.prototype.recv = function (hex) {
     } catch (e) {
         err = e;
     }
-    this.emit('recv', err, this.output);
+    this.emit('recv', cError(err), this.output);
 };
 
 packet.prototype.send = function (cb) {
@@ -132,7 +129,7 @@ packet.prototype.send = function (cb) {
         if (cb) cb.call(null, null, this);
         this.emit('send', buff);
     } catch (err) {
-        this.emit('end', err);
+        this.emit('end', cError(err));
     }
 };
 

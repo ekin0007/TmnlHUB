@@ -24,6 +24,7 @@
  */
 var _ = require('underscore'),
     tmnl_mgr = require('../tmnl/tmnl_manager'),
+    cError = require('../error').Error,
     tools = require('../tools').tools;
 
 exports.handler = function (req, res) {
@@ -38,11 +39,11 @@ exports.handler = function (req, res) {
                     res.send(err || data);
                 });
             } catch (err) {
-                res.send(err);
+                res.send(cError(err));
             }
         }
     } catch (err) {
-        res.send(err);
+        res.send(cError(err));
     }
 
     /** TODO
