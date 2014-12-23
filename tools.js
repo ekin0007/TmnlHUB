@@ -87,21 +87,8 @@ exports.tools = {
         return Math.floor((b / 10)) * 16 + b % 10;
     },
 
-    getA1: function (data) {
-        return this.bcd2b(data[8]) * 100 + this.bcd2b(data[7]);
-    },
-
-    getA2: function (data) {
-        return (data[10] << 8) + data[9];
-    },
-
     getAddr: function (data) {
         return {A1: this.getA1(data), A2: this.getA2(data)};
-    },
-
-    //返回 报文长度
-    getL1: function (data) {
-        return ((data[2] << 8) + data[1]) >> 2;
     },
 
     //检验报文长度，并返回结果
@@ -128,9 +115,116 @@ exports.tools = {
         return false;
     },
 
-    //返回 信息点标识。
-    getPn: function (data, h) {
-        var i = 0, da1 = (h !== undefined ? data : data[14]), da2 = (h !== undefined ? h : data[15]);
+    set_len: function (data) {
+        var len = (data.length << 2) + 2, buff = new Buffer(4);
+        buff.writeInt16LE(len, 0);
+        buff.writeInt16LE(len, 2);
+        return buff.toJSON();
+    },
+
+    set_c: function (json) {
+        var c = json.C, afn = json.AFN, cfn = 11,
+            dir = c.DIR, prm = c.PRM, fcb = c.FCB, fcv = c.FCV;
+        if (afn == 1) {
+            fcb = 0;
+            cfn = 1;
+        } else if (_.has([4, 5, 15], afn)) {
+            cfn = 10;
+        }
+        return [(parseInt('' + dir + prm + fcb + fcv, 2) << 4) + cfn];
+    },
+
+    set_addr: function (a1, a2, a3) {
+        return [tools.b2bcd(a1 % 100), tools.b2bcd(Math.floor(a1 / 100)), a2 % 256, Math.floor(a2 / 256), a3];
+    },
+
+    set_seq: function (json) {
+        var afn = json.AFN, tpv = 0, fir = 1, fin = 1, con = 0, seq = json.seq || 0;
+        if (_.has([4, 5, 15], afn)) con = 1;
+        return [(parseInt('' + tpv + fir + fin + con, 2) << 4) + seq];
+    },
+
+    set_pwd: function (pwd) {
+        if (_.isNumber(pwd)) {
+            return [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        } else {
+            return [];
+        }
+    },
+
+    set_cs: function (data) {
+        for (var i = 0, CS = 0; i < data.length; i++) CS += parseInt(data[i]);
+        return [CS % 256];
+    },
+
+    set_end: function () {
+        return [0x16];
+    },
+
+    getL1: function (data) {
+        return ((data[2] << 8) + data[1]) >> 2;
+    },
+
+    getA1: function (data) {
+        return tools.bcd2b(data[8]) * 100 + tools.bcd2b(data[7]);
+    },
+
+    getA2: function (data) {
+        return (data[10] << 8) + data[9];
+    },
+
+//返回 传输方向位。DIR=0：表示此帧报文是由主站发出的下行报文；	DIR=1：表示此帧报文是由终端发出的上行报文。
+    getDIR: function (buff) {
+        return buff[6] >> 7;
+    },
+
+//返回 启动标志位。PRM =1：表示此帧报文来自启动站；PRM =0：表示此帧报文来自从动站。
+    getPRM: function (data) {
+        return (data[6] >> 6) % 2;
+    },
+
+//返回 请求访问位。ACD=1表示终端有重要事件等待访问，ACD=0表示终端无事件数据等待访问。
+    getACD: function (data) {
+        return (data[6] >> 5) % 2;
+    },
+
+//返回 功能码（控制域）。
+    getCFN: function (data) {
+        return data[6] % 16;
+    },
+
+    getAFN: function (data) {
+        return data[12];
+    },
+
+//返回 帧时间标签有效。TpV=0：表示在附加信息域中无时间标签Tp；TpV=1：表示在附加信息域中带有时间标签Tp；
+    getTpV: function (data) {
+        return data[13] >> 7;
+    },
+
+//返回 首帧标志。FIR：置“1”，报文的第一帧。
+    getFIR: function (data) {
+        return (data[13] >> 6) % 2;
+    },
+
+//返回 末帧标志。FIN：置“1”，报文的最后一帧。
+    getFIN: function (data) {
+        return (data[13] >> 5) % 2;
+    },
+
+//返回 请求确认标志位。CON位置“1”，表示需要对该帧报文进行确认；置“0”，表示不需要对该帧报文进行确认。
+    getCON: function (data) {
+        return (data[13] >> 4) % 2;
+    },
+
+//返回 帧序号SEQ。
+    getSEQ: function (data) {
+        return data[13] & 0x0f;
+    },
+
+//返回 信息点标识。
+    getPn: function (da1, da2) {
+        var i = 0;
         if (da1 == 0 && da2 == 0) return 0;
         while (da1 > 1) {
             i++;
@@ -139,14 +233,46 @@ exports.tools = {
         return (da2 - 1) * 8 + i + 1;
     },
 
-    //返回 信息类标识。
-    getFn: function (data, h) {
-        var i = 0, dt1 = (h !== undefined ? data : data[16]), dt2 = (h !== undefined ? h : data[17]);
+//返回 信息类标识。
+    getFn: function (dt1, dt2) {
+        var i = 0;
         while (dt1 > 1) {
             i++;
             dt1 = Math.floor(dt1 / 2);
         }
         return dt2 * 8 + i + 1;
+    },
+
+//返回 附加信息域。
+    getAUX: function (data) {
+        var ACD = this.getACD(data), TpV = this.getTpV(data), AUX = {};
+        if (ACD === 0x01) {
+            AUX.EC1 = data[data.length - 10];//重要事件计数器EC1
+            AUX.EC2 = data[data.length - 9];//一般事件计数器EC2
+        }
+        if (TpV === 0x01) {
+            AUX.PFC = data[data.length - 8];//启动帧帧序号计数器PFC
+            var PST = data.slice(data.length - 7, data.length - 3);//启动帧发送时标PST
+            AUX.PST = {
+                sec: tools.bcd2b(PST[0]),
+                min: tools.bcd2b(PST[1]),
+                hour: tools.bcd2b(PST[2]),
+                date: tools.bcd2b(PST[3])
+            };
+            AUX.SD = data[data.length - 3];//允许发送传输延时时间SD
+        }
+        return AUX;
+    },
+
+    getDU: function (data) {
+        var acd = this.getACD(data), tpv = this.getTpV(data), auxLength = 2;//（这个2其实是校验和和结尾0x16）
+        if (acd === 1) {
+            auxLength += 2;
+        } else if (tpv === 1) {
+            auxLength += 6;
+        }
+
+        return data.slice(14, data.length - auxLength).toJSON();//du从pn开始到校验码前
     },
 
     setPn: function (pn) {
@@ -171,24 +297,5 @@ exports.tools = {
             dt2 = Math.floor((fn - 1) / 8);
         }
         return [dt1, dt2];
-    },
-
-    getSEQ: function (data) {
-        return data[13] & 0x0f;
-    },
-
-    //返回 传输方向位。DIR=0：表示此帧报文是由主站发出的下行报文；	DIR=1：表示此帧报文是由终端发出的上行报文。
-    getDIR: function (data) {
-        return data[6] >> 7;
-    },
-
-    //返回 启动标志位。PRM =1：表示此帧报文来自启动站；PRM =0：表示此帧报文来自从动站。
-    getPRM: function (data) {
-        return (data[6] >> 6) % 2;
-    },
-
-    //返回 请求确认标志位。CON位置“1”，表示需要对该帧报文进行确认；置“0”，表示不需要对该帧报文进行确认。
-    getCON: function (data) {
-        return (data[13] >> 4) % 2;
     }
 };
