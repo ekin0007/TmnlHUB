@@ -41,4 +41,5 @@ var getPosition = function (stack) {
         return error;
     };
 
+//fork test
 exports.Error = cError;
