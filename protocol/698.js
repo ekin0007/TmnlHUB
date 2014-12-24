@@ -60,6 +60,45 @@ var json_hex = {
                     month: ((arr[4] >> 4) % 2) * 10 + arr[4] % 16,
                     year: tools.bcd2b(arr[5])
                 };
+            },
+
+            //终端控制设置状态
+            fn5: function (data) {
+                var data=[0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+                console.log(data)
+                var controlStatus = {},
+                    tgAPar = [],
+                    totalArr = [],
+                    basicStatus = data.splice(0, 1),
+                    totalCtrlFlag = data.splice(0, 1);
+                controlStatus.isAssure = basicStatus % 2;
+                controlStatus.isElim = (basicStatus >> 1) % 2;
+                controlStatus.isFee = (basicStatus >> 2) % 2;
+                controlStatus.totalCtrlFlag = (_.toArray(totalCtrlFlag.toString(2))).reverse();
+                for (var i = 0; i < controlStatus.totalCtrlFlag.length; i++) {
+                    if (controlStatus.totalCtrlFlag[i] == 1) {
+                        totalArr.push(i + 1)
+                    }
+                }
+                for (var k = 0; k < totalArr.length; k++) {
+                    var tgArr = data.splice(0, 6);
+                    tgAPar.push({
+                        pn: totalArr[k],
+                        pcSchema: tgArr[0],
+                        ctrlSchemaTimesec: (_.toArray(tgArr[1].toString(2))).reverse(),
+                        timesec: tgArr[2] % 2,
+                        facoff: (tgArr[2] >> 1) % 2,
+                        buzStop: (tgArr[2] >> 2) % 2,
+                        powerDown: (tgArr[2] >> 3) % 2,
+                        monthFixed: tgArr[3] % 2,
+                        purchase: (tgArr[3] >> 1) % 2,
+                        pcflag: (_.toArray(tgArr[4].toString(2))).reverse(),
+                        ecflag: (_.toArray(tgArr[5].toString(2))).reverse()
+                    })
+                }
+                controlStatus.tgAPar = tgAPar;
+                return controlStatus;
             }
         },
         AFN13: {},
