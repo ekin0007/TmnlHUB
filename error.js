@@ -12,6 +12,9 @@
  *      URIError 如果指定的字符串含有不合法的十六进制转义序列，则decodeURI()或decodeURIComponent()方法就会抛出URIError类的实例。如果指定的字符串含有不合法的Unicode替代对，encodeURI()或encodeURIComponent()方法也会抛出该异常
  *
  */
+var _ = require('underscore'),
+    moment = require('moment');
+
 var getPosition = function (stack) {
         var arr = stack.split('\n    at ')[1].split(' ')[1].replace('(', '').replace(/\\/g, '/').replace(')', '').split(':'),
             path = arr[0] + ':' + arr[1], row = arr[2], column = arr[3];
@@ -19,7 +22,11 @@ var getPosition = function (stack) {
     },
 
     cError = function (err, name) {
-        var error = {error: true};
+        if (!err) return null;
+        var error = {
+            error: true,
+            date: moment().format('YYYY-MM-DD HH:mm:ss')
+        };
         if (err instanceof Error) {
             error.name = err.name;
             error.message = err.message;

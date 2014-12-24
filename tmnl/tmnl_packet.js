@@ -69,7 +69,7 @@ packet.prototype.on('timeout', function () {
         console.log('第' + this.retry_times + '/' + this.json.retry + '次重发');
         this.send();
     } else {
-        this.emit('end', '通讯超时，共重发' + (this.retry_times - 1) + '次');
+        this.emit('end', cError('通讯超时，共重发' + (this.retry_times - 1) + '次'));
     }
 });
 
@@ -83,7 +83,9 @@ packet.prototype.on('send', function (buff) {
 packet.prototype.on('end', function (err) {
     clearTimeout(this.timer);
     if (this.cb) this.cb.call(null, err, this.output);
-    console.log(util.format('%j', this.output));
+    if (config.debug) {
+        console.log(util.format('%j', err || this.output));
+    }
 });
 
 packet.prototype.timeout = function () {

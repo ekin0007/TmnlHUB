@@ -6,7 +6,6 @@ var _ = require('underscore'),
     config = require('../config').config,
     tmnl_pkt_mgr = require('./tmnl_pkt_mgr').pkt_mgr,
     tools = require('../tools').tools,
-    cError = require('../error').Error,
     admin_server = require('../admin/admin_server').io;
 
 //已连接的终端列表
@@ -68,6 +67,8 @@ var tmnl_list = {},
                     old = getSocket(sid);
                     old.destroy();
                 }
+                this.A1 = tools.getA1(data);
+                this.A2 = tools.getA2(data);
                 this.sid = sid;
                 this.pkt_mgr = new tmnl_pkt_mgr(this);
                 tmnl_list[sid] = this;
@@ -81,7 +82,7 @@ var tmnl_list = {},
     },
 
     on_end = function () {
-        console.log('on_end');
+        log.pkt('设备断开链接', this.A1, this.A2);
     },
 
     on_timeout = function () {

@@ -11,13 +11,14 @@ var sec = 1000, min = 60 * sec, hr = 60 * min,
 
         web_port: 2355,
 
-
         admin_port: 13887,
 
         sys_log: 'logs/sys',
         sys_alert: 'logs/sys',
         sys_err: 'logs/sys',
-        sys_packets: 'logs/packets'
+        sys_packets: 'logs/packets',
+
+        debug: false
     };
 
 exports.config = sys_config;
