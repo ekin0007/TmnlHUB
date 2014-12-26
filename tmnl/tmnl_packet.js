@@ -79,7 +79,7 @@ packet.prototype.on('recv', function (err, data) {
 });
 
 packet.prototype.on('send', function (hex) {
-    admin_server.emit('tmnl_message', tools.now(), ' <<<<< ', tools.hex_str(hex));
+    admin_server.emit('tmnl_message', this.A1, this.A2, tools.now(), ' <<<<< ', tools.hex_str(hex));
 });
 
 packet.prototype.on('end', function (err) {

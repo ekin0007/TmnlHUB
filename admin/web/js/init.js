@@ -10,7 +10,7 @@ Ext.onReady(function () {
         Ext.getCmp('link_total').update('设备连接总数：' + n || 0);
     }).on('testClick', function () {
         alert('Fuck');
-    }).on('tmnl_message', function (date, dir, buffstr) {
+    }).on('tmnl_message', function (A1, A2, date, dir, buffstr) {
         console.log(date, dir, buffstr);
     });
 
