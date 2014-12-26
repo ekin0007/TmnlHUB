@@ -43,11 +43,7 @@ app.use(function (req, res, next) {
 var start = function () {
 
     io.on('connection', function(socket){
-        console.log('websocket connection');
-        socket.on('testClick', function (a, b, c, d, e) {
-            console.log(arguments);
-            socket.emit('testClick', 1,2,3,[4,5,6],{a:1,b:2});
-        });
+        //TODO 每次创建新的socket时触发，可以返回当前连接数之类的功能
     });
 
     server.listen(config.admin_port, function (err) {

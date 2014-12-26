@@ -1,6 +1,11 @@
-var _ = require('underscore');
+var _ = require('underscore'),
+    moment = require('moment');
 
 exports.tools = {
+
+    now: function (format) {
+        return moment().format(format || 'YYYY-MM-DD HH:mm:ss');
+    },
 
     //通用确认帧
     confirm: function (data) {

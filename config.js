@@ -18,7 +18,7 @@ var sec = 1000, min = 60 * sec, hr = 60 * min,
         sys_err: 'logs/sys',
         sys_packets: 'logs/packets',
 
-        debug: false
+        debug: true
     };
 
 exports.config = sys_config;

@@ -10,6 +10,8 @@ Ext.onReady(function () {
         Ext.getCmp('link_total').update('设备连接总数：' + n || 0);
     }).on('testClick', function () {
         alert('Fuck');
+    }).on('tmnl_message', function (date, dir, buffstr) {
+        console.log(date, dir, buffstr);
     });
 
     Ext.BLANK_IMAGE_URL = 'sdk/ext-5.0.1/build/blank.gif';

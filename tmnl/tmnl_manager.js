@@ -58,6 +58,7 @@ var tmnl_list = {},
     on_data = function (data) {
         //TODO 先检查报文合法性，非法报文并且未登录，回否认帧
         if (tools.data_invalid(data)) {
+            admin_server.emit('tmnl_message', tools.now(), ' >>>>> ', tools.hex_str(data));
             if (this.pkt_mgr) {
                 //TODO 传入对象，包括data和callback
                 this.pkt_mgr.recv(data);
