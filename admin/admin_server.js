@@ -17,7 +17,7 @@ app.use(multer());
 
 app.use('/html', express.static(path.join(__dirname, '/web/html')));
 app.use('/sdk', express.static(path.join(__dirname, '/web/sdk')));
-app.use('/Ext', express.static(path.join(__dirname, '/web/sdk/ext-5.0.1/build/examples')));
+app.use('/Ext', express.static(path.join(__dirname, '/web/sdk/ext/build/examples')));
 app.use('/js', express.static(path.join(__dirname, '/web/js')));
 app.use('/css', express.static(path.join(__dirname, '/web/css')));
 
