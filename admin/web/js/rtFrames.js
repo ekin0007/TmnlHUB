@@ -3,22 +3,14 @@ Ext.define('js.rtFrames', {
         return {
             tbar: [{
                 text: '+ 添加窗口',
-                handler: function () {
-                    var me = this, arr = [tmnlMgr[0].sid, tmnlMgr[1].sid, tmnlMgr[2].sid, tmnlMgr[3].sid, tmnlMgr[4].sid],
-                        A1 = 4103, A2 = 12345, sid = '4103@12345';
-
-                    Ext.each(arr, function (item) {
-                        if (!Ext.getCmp(item)) {
-                            me.up('panel').add(Ext.create('js.frameBoard', {id: item}));
-                        }
-                    });
-                }
+                handler: this.test
             }],
             layout: {
                 type: 'vbox',
                 pack: 'start',
                 align: 'stretch'
             },
+            id: 'reFrame',
             listeners: {
                 beforeadd: function (panel, component, index) {
                     if (index >= 5) {
@@ -28,5 +20,46 @@ Ext.define('js.rtFrames', {
                 }
             }
         }
+    },
+    test: function () {
+        Ext.create('Ext.window.Window', {
+            title: 'Hello',
+            height: 200,
+            width: 400,
+            //layout: 'fit',
+            scrollable: true,
+            buttons: [{
+                text: '确定',
+                handler: function () {
+                    var checkboxgroup = this.up('panel').down('checkboxgroup'),
+                        reFrame = Ext.getCmp('reFrame');
+                    Ext.each(Ext.Object.getValues(checkboxgroup.getValue()), function (item) {
+                        if (!Ext.getCmp(item)) {
+                            reFrame.add(Ext.create('js.frameBoard', {id: item}));
+                        }
+                    });
+                }
+            }, {
+                text: '取消'
+            }],
+            items: {
+                xtype: 'checkboxgroup',
+                // Arrange checkboxes into two columns, distributed vertically
+                //columns: 2,
+                //vertical: true,
+                layout: 'column',
+                listeners: {
+                    render: function () {
+                        var me = this;
+                        Ext.each(Ext.global.tmnlMgr, function (item) {
+                            me.add({boxLabel: item.sid, name: item.sid, inputValue: item.sid, width: 100});
+                        });
+                    }
+                }
+            }
+        }).show();
     }
 });
+
+/*
+* */

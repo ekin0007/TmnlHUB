@@ -7,9 +7,15 @@ Ext.onReady(function () {
 
     var socket = io();
     Ext.global.tmnlMgr = '';
-    socket.on('tmnlListChange', function (tmnls) {
+    socket.on('tmnlListChange', function (tmnls, tmnl) {
         Ext.global.tmnlMgr = tmnls;
         Ext.getCmp('link_total').update('设备连接总数：' + tmnls.length || 0);
+        if (tmnl) {
+            var panel = Ext.getCmp(tmnl.sid);
+            if (panel) {
+                panel.offline();
+            }
+        }
     }).on('testClick', function () {
         alert('Fuck');
     }).on('tmnl_message', function (A1, A2, date, dir, buffstr) {
@@ -17,7 +23,6 @@ Ext.onReady(function () {
         if (panel) {
             panel.addFrame(date + dir + buffstr);
         }
-        //console.log(date, dir, buffstr);
     });
 
     Ext.BLANK_IMAGE_URL = 'sdk/ext/build/blank.gif';

@@ -9,6 +9,7 @@ Ext.define('js.frameBoard', {
     nodeTag: 'p',//子节点查询关键字
     onlineState: false,
     closable: true,
+    maximizable: true,
     bbar: [
         {
             xtype: 'checkbox',

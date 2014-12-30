@@ -119,10 +119,11 @@ var tmnl_list = {},
         // 不相同说明这个socket已经被相同sid的socket给覆盖了，所以只关闭不从列表中删除
         if (getSocket(this.sid) === this) {
             remove(this.sid);
+            admin_server.emit('tmnlListChange', get_map(), {A1: this.A1, A2: this.A2, sid: this.sid});
         } else {
             delete this;
+            admin_server.emit('tmnlListChange', get_map());
         }
-        admin_server.emit('tmnlListChange', get_map());
     };
 
 exports.push = push;
