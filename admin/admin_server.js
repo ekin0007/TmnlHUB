@@ -9,7 +9,8 @@ var path = require('path'),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io')(server),
-    config = require('../config').config;
+    config = require('../config').config,
+    tmnl_mgr = require('../tmnl/tmnl_manager');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -42,8 +43,11 @@ app.use(function (req, res, next) {
 
 var start = function () {
 
-    io.on('connection', function(socket){
+    io.on('connection', function (socket) {
         //TODO 每次创建新的socket时触发，可以返回当前连接数之类的功能
+        socket.on('getTmnlList', function () {
+            this.emit('tmnlListChange', tmnl_mgr.map());
+        });
     });
 
     server.listen(config.admin_port, function (err) {

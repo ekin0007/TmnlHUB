@@ -6,15 +6,21 @@ Ext.require([
 Ext.onReady(function () {
 
     var socket = io();
-    socket.on('tmnlLogin', function (n) {
-        Ext.getCmp('link_total').update('设备连接总数：' + n || 0);
+    Ext.global.tmnlMgr = '';
+    socket.on('tmnlListChange', function (tmnls) {
+        Ext.global.tmnlMgr = tmnls;
+        Ext.getCmp('link_total').update('设备连接总数：' + tmnls.length || 0);
     }).on('testClick', function () {
         alert('Fuck');
     }).on('tmnl_message', function (A1, A2, date, dir, buffstr) {
-        console.log(date, dir, buffstr);
+        var panel = Ext.getCmp(A1 + '@' + A2);
+        if (panel) {
+            panel.addFrame(date + dir + buffstr);
+        }
+        //console.log(date, dir, buffstr);
     });
 
-    Ext.BLANK_IMAGE_URL = 'sdk/ext-5.0.1/build/blank.gif';
+    Ext.BLANK_IMAGE_URL = 'sdk/ext/build/blank.gif';
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
@@ -23,6 +29,7 @@ Ext.onReady(function () {
             width: 300, layout: 'fit', items: Ext.create('js.maintree')
         }, {
             region: 'center', xtype: 'tabpanel', activeTab: 0, id: 'main_tabpanel',
+            defaults: {layout: 'fit'},
             items: [{
                 title: 'Dashboard', closable: false, items: Ext.create('js.dash')
             }]
@@ -31,7 +38,7 @@ Ext.onReady(function () {
             items: [
                 Ext.create('Ext.toolbar.TextItem', {id: 'link_total', text: '设备连接总数：0'}),
                 {
-                    text: 'Fuck',
+                    text: 'Button One',
                     handler: function () {
                         socket.emit('testClick', 123);
                     }
@@ -39,7 +46,7 @@ Ext.onReady(function () {
             ],
             listeners: {
                 render: function () {
-
+                    socket.emit('getTmnlList');
                 }
             }
         }]

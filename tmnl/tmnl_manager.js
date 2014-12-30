@@ -21,6 +21,14 @@ var tmnl_list = {},
         return _.size(tmnl_list);
     },
 
+    get_map = function () {
+        return _.map(tmnl_list, function (items) {
+            return {
+                A1: items.A1, A2: items.A2, sid: items.sid
+            };
+        })
+    },
+
 //返回指定的sid是否已经存在
     is_exist = function (sid) {
         return _.has(tmnl_list, sid);
@@ -74,7 +82,7 @@ var tmnl_list = {},
                 this.pkt_mgr = new tmnl_pkt_mgr(this);
                 tmnl_list[sid] = this;
                 this.pkt_mgr.recv(data);
-                admin_server.emit('tmnlLogin', get_size());
+                admin_server.emit('tmnlListChange', get_map());
             }
         } else {
             //TODO 如果有A1和A2，错误的报文也写入日志
@@ -114,10 +122,11 @@ var tmnl_list = {},
         } else {
             delete this;
         }
-        admin_server.emit('tmnlLogin', get_size());
+        admin_server.emit('tmnlListChange', get_map());
     };
 
 exports.push = push;
 exports.len = get_size;
+exports.map = get_map;
 exports.get = getSocket;
 exports.list = tmnl_list;

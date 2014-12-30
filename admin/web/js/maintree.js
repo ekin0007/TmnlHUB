@@ -1,24 +1,17 @@
 Ext.define('js.maintree', {
     constructor: function (opts) {
         return {
-            xtype: 'treepanel',
+            xtype: 'treepanel', useArrows: true,
             store: {
                 root: {
                     text: 'Dashboard',
                     expanded: true,
-                    children: [{
-                        text: '历史日志',
-                        leaf: true
-                    }, {
-                        text: '实时监控',
-                        leaf: true
-                    }, {
-                        text: '报文解析',
-                        leaf: true
-                    }, {
-                        text: '操作记录',
-                        leaf: true
-                    }]
+                    children: [
+                        {text: '历史日志', leaf: true},
+                        {text: '实时监控', leaf: true, name: 'rtFrames'},
+                        {text: '报文解析', leaf: true},
+                        {text: '操作记录', leaf: true}
+                    ]
                 }
             },
             listeners: {
@@ -34,7 +27,8 @@ Ext.define('js.maintree', {
             Ext.getCmp(tabId).show();
         } else {
             tabpanel.add({
-                id: tabId, title: tabTitle, closable: true
+                id: tabId, title: tabTitle, closable: true, scrollable: true,
+                items: Ext.create('js.' + record.get('name'))
             }).show();
         }
     }
