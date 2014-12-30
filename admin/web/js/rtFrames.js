@@ -15,7 +15,7 @@ Ext.define('js.rtFrames', {
                 }
             }],
             layout: {
-                type: 'hbox',
+                type: 'vbox',
                 pack: 'start',
                 align: 'stretch'
             }, id: 'haha',
