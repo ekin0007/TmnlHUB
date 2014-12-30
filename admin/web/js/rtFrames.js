@@ -18,7 +18,7 @@ Ext.define('js.rtFrames', {
                 type: 'vbox',
                 pack: 'start',
                 align: 'stretch'
-            }, id: 'haha',
+            },
             listeners: {
                 beforeadd: function (panel, component, index) {
                     if (index >= 5) {
