@@ -95,7 +95,7 @@ var tmnl_list = {},
     },
 
     on_timeout = function () {
-        log.alert('on_timeout');
+        this.destroy();
     },
 
     on_drain = function () {
