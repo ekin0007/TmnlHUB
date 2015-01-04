@@ -16,9 +16,13 @@ var _ = require('underscore'),
     moment = require('moment');
 
 var getPosition = function (stack) {
-        var arr = stack.split('\n    at ')[1].split(' ')[1].replace('(', '').replace(/\\/g, '/').replace(')', '').split(':'),
-            path = arr[0] + ':' + arr[1], row = arr[2], column = arr[3];
-        return {path: path, row: row, column: column};
+        try {
+            var arr = stack.split('\n    at ')[1].split(' ')[1].replace('(', '').replace(/\\/g, '/').replace(')', '').split(':'),
+                path = arr[0] + ':' + arr[1], row = arr[2], column = arr[3];
+            return {path: path, row: row, column: column};
+        } catch (err) {
+            return '';
+        }
     },
 
     cError = function (err, name) {
