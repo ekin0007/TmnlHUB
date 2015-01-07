@@ -16,6 +16,9 @@ Ext.define('js.frameBoard', {
             Ext.create('Ext.window.Window', {
                 layout: 'fit', constrainHeader: true, maximized: true, title: framePanel.getTitle(), items: framePanel,
                 listeners: {
+                    show: function () {
+                        framePanel.setScrollY(-1, false);
+                    },
                     close: function () {
                         framePanel.getHeader().show();
                         reFrame.insert(framePanel.index || 0, framePanel);
@@ -88,8 +91,6 @@ Ext.define('js.frameBoard', {
                     }
                 }
                 if (this.autoScroll) this.setScrollY(-1, false);
-            },
-            render: function () {
             },
             afterrender: function () {
                 this.div = this.body.query('.x-autocontainer-innerCt', false)[0];
