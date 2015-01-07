@@ -1,39 +1,72 @@
-#images-view .x-panel-body{
+#framelogview .x-panel-body {
     background: white;
     font: 11px Arial, Helvetica, sans-serif;
 }
-#images-view .thumb{
+
+#framelogview .thumb {
     background: url("images/folder.png") no-repeat;
     background-size: 64px 64px;
     height: 64px;
     width: 64px;
 }
 
-.x-quirks #images-view .thumb {
+#framelogview .log {
+    background: url("images/log.png") no-repeat;
+    background-size: 64px 64px;
+    height: 64px;
+    width: 64px;
+}
+
+.x-quirks #framelogview .thumb {
     padding-bottom: 3px;
 }
 
-#images-view .thumb-wrap{
+#framelogview .thumb-wrap {
     float: left;
     margin: 4px 0 4px 4px;
     padding: 5px;
 }
-#images-view .thumb-wrap span {
-    padding-top:3px;
+
+#framelogview .thumb-wrap span {
+    padding-top: 3px;
     display: block;
     overflow: hidden;
     text-align: center;
 }
 
 .x-view-selector {
-    position:absolute;
-    left:0;
-    top:0;
-    width:0;
-    border:1px dotted #3399bb;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    border: 1px dotted #3399bb;
     opacity: .5;
     -moz-opacity: .5;
-    filter:alpha(opacity=50);
-    zoom:1;
-    background-color:#c3daf9;
+    filter: alpha(opacity=50);
+    zoom: 1;
+    background-color: #c3daf9;
 }
+
+/***************************************************************************/
+.frameLog-frame {
+    border-bottom: 1px dotted #ccc;
+    margin: 5px;
+    padding: 5px 0;
+}
+
+.frameLog-frame-sid {
+    font-weight: bold;
+}
+
+.frameLog-frame-date {
+    color: #157fcc;
+}
+
+.frameLog-frame-buff {
+    padding-left: 10px;
+}
+
+/***************************************************************************/
+/***************************************************************************/
+/***************************************************************************/
+/***************************************************************************/
