@@ -1,10 +1,11 @@
 Ext.define('js.rtFrames', {
+    //frameBuff: 1000,
     constructor: function () {
         return {
             tbar: [{
                 text: '+ 添加窗口',
                 handler: this.addnew
-            }],
+            }, '-', '<span style="color: dodgerblue">说明：报文窗口的缓冲区为' + 1000 + '行，当接收报文行数超过缓冲区后，将循环覆盖。</span>'],
             layout: {
                 type: 'vbox',
                 pack: 'start',
