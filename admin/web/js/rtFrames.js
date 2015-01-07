@@ -24,8 +24,8 @@ Ext.define('js.rtFrames', {
     test: function () {
         Ext.create('Ext.window.Window', {
             title: 'Hello',
-            height: 200,
-            width: 400,
+            height: 500,
+            width: 800,
             //layout: 'fit',
             scrollable: true,
             buttons: [{
@@ -38,9 +38,13 @@ Ext.define('js.rtFrames', {
                             reFrame.add(Ext.create('js.frameBoard', {id: item}));
                         }
                     });
+                    this.up('window').close();
                 }
             }, {
-                text: '取消'
+                text: '取消',
+                handler: function () {
+                    this.up('window').close();
+                }
             }],
             items: {
                 xtype: 'checkboxgroup',
