@@ -5,6 +5,12 @@ Ext.require([
 
 Ext.onReady(function () {
 
+    //不支持IE
+    if (Ext.isIE) {
+        location.href = 'browser';
+        return false;
+    }
+
     var socket = io();
     Ext.global.tmnlMgr = '';
     socket.on('tmnlListChange', function (tmnls, offlineTmnl) {

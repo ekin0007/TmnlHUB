@@ -26,6 +26,10 @@ app.all(['/'], function (req, res) {
     res.sendFile(__dirname + '/web/html/index.html');
 });
 
+app.all(['/browser'], function (req, res) {
+    res.sendFile(__dirname + '/web/html/browser.html');
+});
+
 app.all(['/help'], function (req, res) {
     res.send('返回帮助信息');
 });
