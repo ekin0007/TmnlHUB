@@ -7,11 +7,11 @@ Ext.onReady(function () {
 
     var socket = io();
     Ext.global.tmnlMgr = '';
-    socket.on('tmnlListChange', function (tmnls, tmnl) {
+    socket.on('tmnlListChange', function (tmnls, offlineTmnl) {
         Ext.global.tmnlMgr = tmnls;
         Ext.getCmp('link_total').update('设备连接总数：' + tmnls.length || 0);
-        if (tmnl) {
-            var panel = Ext.getCmp(tmnl.sid);
+        if (offlineTmnl) {
+            var panel = Ext.getCmp(offlineTmnl.sid);
             if (panel) {
                 panel.offline();
             }

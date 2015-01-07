@@ -7,9 +7,24 @@ Ext.define('js.frameBoard', {
     border: true,
     buff: 1000,//缓冲区，子节点长度
     nodeTag: 'p',//子节点查询关键字
-    onlineState: false,
     closable: true,
-    maximizable: true,
+    tools: [{
+        type: 'maximize',
+        handler: function () {
+            var reFrame = Ext.getCmp('reFrame'),
+                framePanel = this.up('panel');
+            Ext.create('Ext.window.Window', {
+                layout: 'fit', constrainHeader: true, maximized: true, title: framePanel.getTitle(), items: framePanel,
+                listeners: {
+                    close: function () {
+                        framePanel.getHeader().show();
+                        reFrame.insert(framePanel.index || 0, framePanel);
+                        framePanel.setScrollY(-1, false);
+                    }
+                }
+            }).show(framePanel);
+        }
+    }],
     bbar: [
         {
             xtype: 'checkbox',
@@ -48,8 +63,9 @@ Ext.define('js.frameBoard', {
         this.fireEvent('addframe', this.getChildLength());
     },
     offline: function () {
-        this.onlineState = false;
-        this.setTitle(this.rawTitle + ' - ' + '<span style="color:red;">离线</span>');
+        var time = Ext.Date.format(new Date(), 'Y-m-d H:i:s '),
+            str = time + '----- 终端离线';
+        this.addFrame('<span style="color:darkred">' + str + '</span>');
     },
     listeners: [
         {
@@ -66,7 +82,6 @@ Ext.define('js.frameBoard', {
                 return false;
             },
             addframe: function (length) {
-                if (this.onlineState == false) this.fireEvent('online');
                 if (length > this.buff) {
                     while (this.getChildLength() > this.buff) {
                         this.div.getFirstChild().destroy();
@@ -74,16 +89,11 @@ Ext.define('js.frameBoard', {
                 }
                 if (this.autoScroll) this.setScrollY(-1, false);
             },
-            online: function () {
-                this.onlineState = true;
-                this.setTitle(this.rawTitle + ' - ' + '<span style="color:green;">在线</span>');
-            },
             render: function () {
-                this.div = this.body.query('.x-autocontainer-innerCt', false)[0];
             },
             afterrender: function () {
-                this.rawTitle = this.id;
-                this.fireEvent('online');
+                this.div = this.body.query('.x-autocontainer-innerCt', false)[0];
+                this.setTitle(this.id);
             }
         }
     ]

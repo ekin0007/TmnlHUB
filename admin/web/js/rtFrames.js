@@ -3,7 +3,7 @@ Ext.define('js.rtFrames', {
         return {
             tbar: [{
                 text: '+ 添加窗口',
-                handler: this.test
+                handler: this.addnew
             }],
             layout: {
                 type: 'vbox',
@@ -17,11 +17,14 @@ Ext.define('js.rtFrames', {
                         Ext.Msg.alert('提示', '报文查看窗口最多同时打开5个');
                         return false;
                     }
+                },
+                remove: function (panel, framePanel) {
+                    framePanel.getHeader().hide();
                 }
             }
         }
     },
-    test: function () {
+    addnew: function () {
         Ext.create('Ext.window.Window', {
             title: 'Hello',
             height: 500,
@@ -33,9 +36,9 @@ Ext.define('js.rtFrames', {
                 handler: function () {
                     var checkboxgroup = this.up('panel').down('checkboxgroup'),
                         reFrame = Ext.getCmp('reFrame');
-                    Ext.each(Ext.Object.getValues(checkboxgroup.getValue()), function (item) {
+                    Ext.each(Ext.Object.getValues(checkboxgroup.getValue()), function (item, index) {
                         if (!Ext.getCmp(item)) {
-                            reFrame.add(Ext.create('js.frameBoard', {id: item}));
+                            reFrame.add(Ext.create('js.frameBoard', {id: item, index: index}));
                         }
                     });
                     this.up('window').close();
