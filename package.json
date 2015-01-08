@@ -7,12 +7,17 @@
     "test": "test"
   },
   "dependencies": {
+    "body-parser": "^1.10.1",
+    "bookshelf": "^0.7.9",
+    "debug": "^2.1.1",
+    "express": "^4.10.7",
+    "knex": "^0.7.3",
+    "mkdirp": "^0.5.0",
     "moment": "^2.8.4",
-    "express": "^4.10.6",
     "multer": "^0.1.6",
-    "sqlite3": "^3.0.4",
+    "mysql": "^2.5.4",
     "socket.io": "^1.2.1",
-    "body-parser": "^1.10.0",
+    "sqlite3": "^3.0.4",
     "underscore": "^1.7.0"
   },
   "devDependencies": {},
@@ -23,7 +28,7 @@
     "type": "git",
     "url": "https://github.com/baiej214/TmnlHUB.git"
   },
-  "author": "Rango",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/baiej214/TmnlHUB/issues"
