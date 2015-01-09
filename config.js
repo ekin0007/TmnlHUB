@@ -10,6 +10,7 @@ var sec = 1000, min = 60 * sec, hr = 60 * min,
         tmnl_recv_timeout: 10 * sec,
 
         web_port: 2355,
+        broadcast: 2356,
 
         admin_port: 13887,
 

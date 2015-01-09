@@ -9,7 +9,8 @@ var util = require('util'),
     events = require('events'),
     _ = require('underscore'),
     tools = require('../tools').tools,
-    Packet = require('./tmnl_packet').packet;
+    Packet = require('./tmnl_packet').packet,
+    broadcast = require('../web/broadcast');
 
 /**
  * 构造函数
@@ -42,7 +43,15 @@ util.inherits(pkt_manager, events.EventEmitter);
 pkt_manager.prototype.recv = function (hex) {
     var seq = tools.getSEQ(hex), dir = tools.getDIR(hex), prm = tools.getPRM(hex);
     if (dir == 1 && prm == 1) {
-        this.emit('push', {dir: 1, prm: 1, hex: hex, socket: this.socket}, seq);
+        //广播发送事件
+        var cb = function (err, json) {
+            if (!err) {
+                if (json.REQ.json.AFN == 0x0e) {
+                    broadcast.broadcast(err || json);
+                }
+            }
+        };
+        this.emit('push', {dir: 1, prm: 1, hex: hex, socket: this.socket, cb: cb}, seq);
     } else {
         var packet = _.find(this.packets, function (item) {
             return item.get_seq() == seq;
