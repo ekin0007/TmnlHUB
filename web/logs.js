@@ -8,7 +8,7 @@ var path = require('path'),
 
 exports.handler = function (req, res) {
     try {
-        var a1 = req.body.A1, a2 = req.body.A2, date = req.body.date;
+        var a1 = req.body.A1, a2 = req.body.A2, date = new Date(req.body.date);
 
         db.all('select * from frames where A1 = ' + a1 + ' and A2 = ' + a2 + ' and ' +
             'strftime("%Y-%m-%d", dts) = "' + moment(date).format('YYYY-MM-DD') + '" order by id;',
