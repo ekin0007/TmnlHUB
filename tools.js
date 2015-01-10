@@ -277,6 +277,7 @@ exports.tools = {
             auxLength += 6;
         }
 
+        //返回的数据使用Buffer的toJSON方法转成数组，方便操作
         return data.slice(14, data.length - auxLength).toJSON();//du从pn开始到校验码前
     },
 

@@ -1629,11 +1629,12 @@ var json_hex = {
                 var signData = data.splice(0, 1)[0],
                     json = {sinaArr: []};
                 for (var i = 0; i < 3; i++) {
-                    if (signData >> 2 === 1){
-                        var timesecNum=i+1
+                    if (signData >> 2 === 1) {
+                        var timesecNum = i + 1
                         json.sinaArr.push(i + 1)
                     }
-                };
+                }
+                ;
 
                 arr['pc'] = [];
                 for (var i = 0, j = 0, l = 0; i < du.length - 21; i++, j++) {
@@ -3191,9 +3192,180 @@ var json_hex = {
                 return json
             }
         },
-        AFN14: {},
+        AFN14: {
+            Fn1: function (data) {
+                //4c 79 4b 4c 17 10 00 16 31 12 14 01 00 02 00 00 00 00 00 00 00 40
+                var json = {}, arr = data.splce(0, 4), eventLength = 0;
+                json.EC1 = arr[0];
+                json.EC2 = arr[1];
+                json.Pm = arr[2];
+                json.Pn = arr[3];
+                json.ERC = [];
+                if (json.Pm < json.Pn) {
+                    eventLength = json.Pn - json.Pm;
+                } else {
+                    eventLength = 256 + json.Pn - json.Pm;
+                }
+                _.times(eventLength, function (i) {
+                    json.ERC.push({
+                        ERC: data.shift(),
+                        Le: data.shift(),
+                        events: hex_json_event['ERC' + this.ERC](data.splice(0, this.Le))
+                    });
+                });
+            }
+        },
         AFN15: {},
         AFN16: {}
+    },
+
+    hex_json_event = {
+        ERC1: function (data) {
+        },
+
+        ERC2: function (data) {
+        },
+
+        ERC3: function (data) {
+            var len = data.length,
+                json = {
+                    params_alter_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                    addr: data.shift(),
+                    alter_params_du: []
+                };
+            _.times(len, function (i) {
+                json.alter_params_du.push({
+                    pn: tools.getPn(data.shift(), data.shift()),
+                    Fn: tools.getFn(data.shift(), data.shift())
+                });
+            });
+            return json;
+        },
+
+        ERC4: function (data) {
+        },
+
+        ERC5: function (data) {
+            return {
+                trip_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                jump_round: _.toArray(data.shift().toString(2)).reverse(),
+                trip_power: tools.getDFA2(data.shift(), data.shift()),
+                jump_after2_power: tools.getDFA2(data.shift(), data.shift())
+            };
+        },
+
+        ERC6: function (data) {
+        },
+
+        ERC7: function (data) {
+            return {
+                trip_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                group_total: data.shift(),
+                trip_round: _.toArray(data.shift().toString(2)).reverse(),
+                trip_class: _.toArray(data.shift().toString(2)).reverse(),
+                trip_power: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                trip_power_2min: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift())
+            };
+        },
+
+        ERC8: function (data) {
+        },
+
+        ERC9: function (data) {
+        },
+
+        ERC10: function (data) {
+        },
+
+        ERC11: function (data) {
+        },
+
+        ERC12: function (data) {
+        },
+
+        ERC13: function (data) {
+        },
+
+        ERC14: function (data) {
+            return {
+                power_cut_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                power_on_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift())
+            };
+        },
+
+        ERC15: function (data) {
+        },
+
+        ERC16: function (data) {
+        },
+
+        ERC17: function (data) {
+        },
+
+        ERC18: function (data) {
+        },
+
+        ERC19: function (data) {
+            return {
+                power_purchase_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                group_total: data.shift(),
+                odd_num: data.shift() + (data.shift() << 8) + (data.shift() << 16) + (data.shift() << 24),
+                add_flag: data.shift() == 85 ? '追加' : '刷新',
+                power_purchase_value: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                alert_threshold: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                jump_threshold: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                before_purchase: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                after_purchase: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift())
+            };
+        },
+
+        ERC20: function (data) {
+        },
+
+        ERC21: function (data) {
+        },
+
+        ERC22: function (data) {
+        },
+
+        ERC23: function (data) {
+        },
+
+        ERC24: function (data) {
+        },
+
+        ERC25: function (data) {
+        },
+
+        ERC26: function (data) {
+        },
+
+        ERC27: function (data) {
+        },
+
+        ERC28: function (data) {
+        },
+
+        ERC29: function (data) {
+        },
+
+        ERC30: function (data) {
+        },
+
+        ERC31: function (data) {
+        },
+
+        ERC32: function (data) {
+        },
+
+        ERC33: function (data) {
+        },
+
+        ERC34: function (data) {
+        },
+
+        ERC35: function (data) {
+        }
     };
 
 exports.json_hex = function (json) {
