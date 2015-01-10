@@ -18,8 +18,287 @@ var json_hex = {
         AFN5: {},
         AFN6: {},
         AFN8: {},
-        AFN9: {},
-        AFN10: {},
+        AFN9: {
+            Fn1: function () {
+                return [];
+            },
+
+            Fn2: function () {
+                return [];
+            },
+
+            Fn3: function () {
+                return [];
+            },
+            Fn4: function () {
+                return [];
+            },
+            Fn5: function () {
+                return [];
+            },
+            Fn6: function () {
+                return [];
+            },
+
+            Fn7: function () {
+                return [];
+            },
+
+            Fn8: function () {
+                return [];
+            }
+        },
+        AFN10: {
+            Fn1: function () {
+                return [];
+            },
+
+            Fn2: function () {
+                return [];
+            },
+
+            Fn3: function () {
+                return [];
+            },
+            Fn4: function () {
+                return [];
+            },
+            Fn5: function () {
+                return [];
+            },
+            Fn6: function () {
+                return [];
+            },
+
+            Fn7: function () {
+                return [];
+            },
+
+            Fn8: function () {
+                return [];
+            },
+
+            Fn9: function () {
+                return [];
+            },
+
+            Fn10: function (data) {
+                var arr = [data.pnArr.length % 256, data.pnArr.length >> 8];
+                data.pnArr.forEach(function (objectID) {
+                    arr.push(objectID % 256, objectID >> 8);
+                });
+                return arr;
+            },
+
+            Fn11: function (data) {
+                var arr = [data.configArr.length];
+                data.configArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                console.log(arr)
+                return arr;
+            },
+
+            Fn13: function (data) {
+                var arr = [data.ACAnalogArr.length];
+                data.ACAnalogArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn14: function (data) {
+                var arr = [data.tgArr.length];
+                data.tgArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn15: function (data) {
+                var arr = [data.dataArr.length];
+                data.dataArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn16: function (data) {
+                return []
+            },
+
+            Fn17: function (data) {
+                return []
+            },
+
+            Fn18: function (data) {
+                return []
+            },
+
+            Fn19: function (data) {
+                return []
+            },
+
+            Fn20: function (data) {
+                return []
+            },
+
+            Fn21: function (data) {
+                return []
+            },
+
+            Fn22: function (data) {
+                return []
+            },
+
+            Fn23: function (data) {
+                return []
+            },
+
+            Fn24: function (data) {
+                return []
+            },
+
+            Fn25: function (data) {
+                return []
+            },
+
+            Fn26: function (data) {
+                return []
+            },
+
+            Fn27: function (data) {
+                return []
+            },
+
+            Fn28: function (data) {
+                return []
+            },
+
+            Fn29: function (data) {
+                return []
+            },
+
+            Fn30: function (data) {
+                return []
+            },
+
+
+            Fn33: function (data) {
+                var arr = [data.dataArr.length];
+                data.dataArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn34: function (data) {
+                var arr = [data.dataArr.length];
+                data.dataArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn35: function (data) {
+                return []
+            },
+
+            Fn36: function (data) {
+                return []
+            },
+            Fn37: function (data) {
+                return []
+            },
+            Fn38: function (data) {
+                var arr = [data.bigNum].concat(data.smallArr.length)
+                data.smallArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn39: function (data) {
+                var arr = [data.bigNum].concat(data.smallArr.length)
+                data.smallArr.forEach(function (objectID) {
+                    arr.push(objectID);
+                });
+                return arr;
+            },
+
+            Fn41: function (data) {
+                return [];
+            },
+
+            Fn42: function (data) {
+                return [];
+            },
+
+            Fn43: function (data) {
+                return [];
+            },
+
+            Fn44: function (data) {
+                return [];
+            },
+
+            Fn45: function (data) {
+                return [];
+            },
+
+            Fn46: function (data) {
+                return [];
+            },
+
+            Fn47: function (data) {
+                return [];
+            },
+
+            Fn48: function (data) {
+                return [];
+            },
+
+            Fn49: function (data) {
+                return [];
+            },
+
+            Fn57: function (data) {
+                return [];
+            },
+
+            Fn58: function (data) {
+                return [];
+            },
+
+            Fn59: function (data) {
+                return [];
+            },
+
+            Fn60: function (data) {
+                return [];
+            },
+
+            Fn61: function (data) {
+                return [];
+            },
+
+            Fn65: function (data) {
+                return [];
+            },
+
+            Fn66: function (data) {
+                return [];
+            },
+
+            Fn67: function (data) {
+                return [];
+            },
+
+            Fn68: function (data) {
+                return [];
+            }
+
+        },
         AFN11: {},
         AFN12: {
             Fn2: function () {
@@ -526,8 +805,1009 @@ var json_hex = {
         AFN5: {},
         AFN6: {},
         AFN8: {},
-        AFN9: {},
-        AFN10: {},
+        AFN9: {
+            //终端版本信息
+            Fn1: function (data) {
+                var json = {},
+                    dataArr = data.splice(0, 41);
+                json.mcn = tools.getDFASC(dataArr.slice(0, 4));
+                json.dn = tools.getDFASC(dataArr.slice(4, 12));
+                json.tsvn = tools.getDFASC(dataArr.slice(12, 16));
+                json.sdoidate = tools.getDFA20(dataArr[16], dataArr[17], dataArr[18]);
+                json.tcvmn = tools.getDFASC(dataArr.slice(19, 30));
+                json.tcpvn = tools.getDFASC(dataArr.slice(30, 34));
+                json.thvn = tools.getDFASC(dataArr.slice(34, 38));
+                json.hdoidate = tools.getDFA20(dataArr[38], dataArr[39], dataArr[40]);
+                return json
+            },
+
+            //终端支持的输入、输出及通信端口配置
+            Fn2: function (data) {
+                var comType = [
+                        '直接RS485接口',
+                        '直接RS232接口',
+                        '串行接口连接窄带低压载波通信模块'
+                    ],
+                    use = [
+                        '专变、公变抄表',
+                        '变电站抄表',
+                        '台区低压集抄',
+                        '当地用户侧数据共享'
+                    ],
+                    dataArr = data.splice(0, 17);
+                json = {
+                    pulseInputNum: dataArr[0],
+                    switchInputNum: dataArr[1],
+                    analogNum: dataArr[2],
+                    switchOutputNum: dataArr[3],
+                    maxDeviceNum: dataArr[4] + (dataArr[5] << 8),
+                    maxReByteNum: dataArr[6] + (dataArr[7] << 8),
+                    maxSeByteNum: dataArr[8] + (dataArr[9] << 8),
+                    add1: dataArr[10],
+                    add2: dataArr[11],
+                    add3: dataArr[12],
+                    add4: dataArr[13],
+                    add5: dataArr[14],
+                    add6: dataArr[15],
+                    n: dataArr[16]
+                };
+
+                for (var i = 0; i < json.n; i++) {
+                    var portArr = data.splice(0, 12);
+                    json['port' + (i + 1)] = {
+                        portNo: portArr[0] % 16,
+                        comType: comType[(portArr[0] >> 5) % 4],
+                        serialPort: portArr[0] >> 7 == 0 ? '标准异步串行口' : '非标准异步串行口',
+                        use: use[portArr[1]],
+                        baudRate: portArr[2] + (portArr[3] << 8) + (portArr[4] << 16) + (portArr[5] << 24),
+                        deviceNum: portArr[6] + (portArr[7] << 8),
+                        maxReByteNum: portArr[8] + (portArr[9] << 8),
+                        maxSeByteNum: portArr[10] + (portArr[11] << 8)
+                    }
+                }
+                return json;
+            },
+
+            //终端支持的其他配置
+            Fn3: function (data) {
+                var dataArr = data.splice(0, 19),
+                    json = {
+                        mpNum: dataArr[0] + (dataArr[1] << 8),
+                        totalNum: dataArr[2],
+                        assiNum: dataArr[3],
+                        guardNum: dataArr[4],
+                        m: dataArr[5],
+                        mpDensity: dataArr[6],
+                        pDensity: dataArr[7],
+                        qDensity: dataArr[8],
+                        d_eDensity: dataArr[9],
+                        d_rDensity: dataArr[10],
+                        day: dataArr[11],
+                        month: dataArr[12],
+                        schemeNum: dataArr[13],
+                        harmonicWave: dataArr[14],
+                        CapNum: dataArr[15],
+                        impConsNum: dataArr[16]
+                    };
+
+                for (var i = 0; i < 16; i++) {
+                    json['no' + i] = data.splice(0, 1)
+                }
+                return json
+            },
+
+            //终端支持的参数配置
+            Fn4: function (data) {
+                var json = {
+                    n: data.splice(0, 1)
+                };
+                for (var i = 0; i < json.n; i++) {
+                    var value = data.splice(0, 1);
+                    var j = i * 8;
+                    json['group' + (i + 1)] = {};
+                    for (var k = 0; k < 8; k++) {
+                        if ((value >> k) % 2 == 1)json['group' + (i + 1)]['f' + (j + 1 + k)] = '支持';
+                    }
+                }
+                return json;
+            },
+
+            //终端支持的控制配置
+            Fn5: function (data) {
+                var json = {
+                    n: data.splice(0, 1)
+                };
+                for (var i = 0; i < json.n; i++) {
+                    var value = data.splice(0, 1);
+                    var j = i * 8;
+                    json['group' + (i + 1)] = {};
+                    for (var k = 0; k < 8; k++) {
+                        if ((value >> k) % 2 == 1)json['group' + (i + 1)]['f' + (j + 1 + k)] = '支持';
+                    }
+                }
+                return json;
+            },
+
+            //终端支持的1类数据配置
+            Fn6: function (data) {
+                var flag = [], flagArr = data.splice(0, 2);
+                for (var i = 0; i < 8; i++) {
+                    if ((flagArr[1] >> i) % 2 == 1) {
+                        flag.push(i);
+                    }
+                    if ((flagArr[0] >> i) % 2 == 1) {
+                        flag.push(i + 8);
+                    }
+                }
+                function sortNumber(a, b) {
+                    return a - b;
+                }
+
+                var json = {flag: flag.sort(sortNumber)}, j = 0,
+                    dataConfig = [],
+                    getConfig = function () {
+                        if (data.length !== 0) {
+                            var dataObj = {
+                                n: data.splice(0, 1)
+                            };
+                            for (var i = 1; i <= dataObj.n; i++) {
+                                var o = (i - 1) * 8,
+                                    group = data.splice(0, 1);
+                                dataObj['group' + i] = {};
+                                for (var k = 0; k < 8; k++) {
+                                    if ((group >> k) % 2 == 1) dataObj['group' + i]['f' + (o + 1 + k)] = '支持';
+                                }
+                            }
+                            dataConfig.push(dataObj);
+                            getConfig();
+                        }
+                    };
+                getConfig();
+                json.dataConfig = dataConfig;
+                return json;
+            },
+
+            //终端支持的2类数据配置
+            Fn7: function (data) {
+                var flag = [], flagArr = data.splice(0, 2);
+                for (var i = 0; i < 8; i++) {
+                    if ((flagArr[1] >> i) % 2 == 1) {
+                        flag.push(i);
+                    }
+                    if ((flagArr[0] >> i) % 2 == 1) {
+                        flag.push(i + 8);
+                    }
+                }
+                function sortNumber(a, b) {
+                    return a - b;
+                }
+
+                var json = {flag: flag.sort(sortNumber)}, j = 0,
+                    dataConfig = [],
+                    getConfig = function () {
+                        if (data.length !== 0) {
+                            var dataObj = {
+                                n: data.splice(0, 1)
+                            };
+                            for (var i = 1; i <= dataObj.n; i++) {
+                                var o = (i - 1) * 8,
+                                    group = data.splice(0, 1);
+                                dataObj['group' + i] = {};
+                                for (var k = 0; k < 8; k++) {
+                                    if ((group >> k) % 2 == 1) dataObj['group' + i]['f' + (o + 1 + k)] = '支持';
+                                }
+                            }
+                            dataConfig.push(dataObj);
+                            getConfig();
+                        }
+                    };
+                getConfig();
+                json.dataConfig = dataConfig;
+                return json;
+            },
+
+            //终端支持的事件记录配置
+            Fn8: function (data) {
+                var arr = [],
+                    dataArr = data.splice(0, 8);
+
+                for (var i = 0; i < 8; i++) {
+                    for (var j = 0; j < 8; j++) {
+                        if ((dataArr[0 + i] >> j) % 2 == 1) arr.push('ERC' + (j + i * 8 + 1));
+                    }
+                }
+                return arr;
+            }
+        },
+        AFN10: {
+            //终端上行通信口通信参数设置
+            Fn1: function (data) {
+                var dataArr = data.splice(0, 6), json = {
+                    rts: dataArr[0],
+                    delay_time: dataArr[1],
+                    timeouts: dataArr[2] + ((dataArr[3] % 16) << 8),
+                    repeat: (dataArr[3] >> 4) % 4,
+                    data_con1: dataArr[4] % 2,
+                    data_con2: (dataArr[4] >> 1) % 2,
+                    data_con3: (dataArr[4] >> 2) % 2,
+                    heart_beat: dataArr[5]
+                };
+                return json
+            },
+
+            //终端上行通信口无线中继转发设置
+            Fn2: function (data) {
+                var dataArr = data.splice(0, 2),
+                    json = {
+                        isWlTrans: dataArr[0] >> 7 == 0 ? '禁止' : '允许',
+                        WlTransNum: dataArr[0] % 128
+                    };
+                for (var i = 1; i <= json.WlTransNum; i++) {
+                    var addrArr = data.splice(0, 2);
+                    json['tmnlAdd' + i] = tools.bcd2b(addrArr[0]) + tools.bcd2b(addrArr[1]) * 100
+                }
+                return json;
+            },
+
+            //站IP地址和端口
+            Fn3: function (data) {
+                var dataArr = data.splice(0, 28), json = {
+                    master_ip: dataArr[0] + '.' + dataArr[1] + '.' + dataArr[2] + '.' + dataArr[3],
+                    master_port: (dataArr[5] << 8) + dataArr[4],
+                    back_ip: dataArr[6] + '.' + dataArr[7] + '.' + dataArr[8] + '.' + dataArr[9],
+                    back_port: (dataArr[11] << 8) + dataArr[10],
+                    apn: tools.getDFASC(dataArr.slice(12, 27))
+                };
+                return json;
+            },
+
+            //主站电话号码和短信中心号码
+            Fn4: function (data) {
+                var dataArr = data.splice(0, 16),
+                    apn = "", asms = "";
+                for (var i = 0; i < 7; i++) {
+                    apn += tools.bcd2b(dataArr[i]);
+                }
+
+                for (var i = 8; i < 16; i++) {
+                    asms += tools.bcd2b(dataArr[i]);
+                }
+                return {apn: apn.substr(0, 11), asms: asms.substr(0, 11)};
+            },
+
+            //终端上行通信消息认证参数设置
+            Fn5: function (data) {
+                var dataArr = data.splice(0, 3),
+                    json = {
+                        masn: dataArr[0], masp: (dataArr[2] << 8) + dataArr[1]
+                    };
+                return json;
+            },
+
+            //终端组地址设置
+            Fn6: function (data) {
+                var dataArr = data.splice(0, 16),
+                    json = {
+                        tgadd1: (dataArr[1] << 8) + dataArr[0],
+                        tgadd2: (dataArr[3] << 8) + dataArr[2],
+                        tgadd3: (dataArr[5] << 8) + dataArr[4],
+                        tgadd4: (dataArr[7] << 8) + dataArr[6],
+                        tgadd5: (dataArr[9] << 8) + dataArr[8],
+                        tgadd6: (dataArr[11] << 8) + dataArr[10],
+                        tgadd7: (dataArr[13] << 8) + dataArr[12],
+                        tgadd8: (dataArr[15] << 8) + dataArr[14]
+                    };
+                return json;
+            },
+
+            //终端IP地址和端口
+            //TODO 用户名长度m\用户名\密码长度n\密码 好像有问题
+            //TODO 有待优化
+            /*
+             fn7: function () {
+             var json = {
+             tip1: buff[18], tip2: buff[19], tip3: buff[20], tip4: buff[21],
+             mask1: buff[22], mask2: buff[23], mask3: buff[24], mask4: buff[25],
+             gw1: buff[26], gw2: buff[27], gw3: buff[28], gw4: buff[29],
+             psk: buff[30], psip1: buff[31], psip2: buff[32], psip3: buff[33], psip4: buff[34],
+             psport: (buff[36] << 8) + buff[35], pscm: buff[37],
+             unl: buff[38],
+             uname: buff.toString('utf8', 39, 39 + buff[38]),
+             pswl: buff[38 + buff[38] + 1],
+             psw: buff.toString('utf8', 38 + buff[38] + 2, 38 + buff[38] + 2 + buff[38 + buff[38] + 1]),
+             tlport: (buff[buff.length - 3] << 8) + buff[buff.length - 4]
+             };
+             return {json: json, key:16};
+             },
+             */
+
+            //终端上行通信工作方式（以太专网或虚拟专网）
+            Fn8: function (data) {
+                var dataArr = data.splice(0, 8), json = {
+                    khjms: dataArr[0] % 4,
+                    zdgzms: (dataArr[0] >> 4) % 4,
+                    txms: dataArr[0] >> 7,
+                    rdi: (dataArr[2] >> 8) + (dataArr[1] % 256),
+                    rdf: dataArr[3],
+                    vdt: dataArr[4],
+                    con1: dataArr[5],
+                    con2: dataArr[6],
+                    con3: dataArr[7]
+                };
+                return json
+            },
+
+            //终端事件记录配置设置
+            Fn9: function (data) {
+                var dataArr = data.splice(0, 16),
+                    json = {};
+                for (var j = 0; j < 8; j++) {
+                    json['eff' + (j + 1)] = [];
+                    for (var i = 0; i < 8; i++) {
+                        if ((dataArr[0 + j] >> i) % 2 === 1) {
+                            json['eff' + (j + 1)].push(i);
+                        }
+                    }
+                }
+                for (j = 0; j < 8; j++) {
+                    json['imp' + (j + 1)] = [];
+                    for (var i = 0; i < 8; i++) {
+                        if ((dataArr[8 + j] >> i) % 2 === 1) {
+                            json['imp' + (j + 1)].push(i);
+                        }
+                    }
+                }
+                return json;
+            },
+
+            //终端电能表/交流采样装置配置参数
+            Fn10: function (data) {
+                var numArr = data.splice(0, 2),
+                    json = {len: (numArr[1] << 8) + numArr[0]},
+                    arr = [];
+                for (var i = 0, j; i < json.len; i++) {
+                    var dataArr = data.splice(0, 27);
+                    arr.push({
+                        index: (dataArr[1] << 8) + dataArr[0],
+                        pIndex: (dataArr[3] << 8) + dataArr[2],
+                        speed: dataArr[4] >> 5,
+                        port: dataArr[4] & 0x1f,
+                        pType: dataArr[5],
+                        signalAddress: tools.getDFA12(dataArr[6], dataArr[7], dataArr[8], dataArr[9], dataArr[10], dataArr[11]),
+                        signalCode: dataArr[17] * Math.pow(10, 10) + dataArr[16] * Math.pow(10, 8) + dataArr[15] * Math.pow(10, 6) +
+                        dataArr[14] * Math.pow(10, 4) + dataArr[13] * Math.pow(10, 2) + dataArr[12],
+                        rate: dataArr[18] & 0x3f,
+                        Integer: (dataArr[19] & 0xf) >> 2,
+                        decimal: dataArr[19] & 0x3,
+                        collector: tools.getDFA12(dataArr[20], dataArr[21], dataArr[22], dataArr[23], dataArr[24], dataArr[25]),
+                        bigClass: dataArr[26] >> 4,
+                        smallClass: dataArr[26] & 0xf
+                    });
+                }
+                json.arr = arr;
+                return json;
+            },
+
+            //终端脉冲配置参数
+            Fn11: function (data) {
+                var type = ['正向有功', '正向无功', '反向有功', '反向无功'],
+                    json = {
+                        pulseNum: data.splice(0, 1)
+                    },
+                    arr = [];
+                for (var i = 1; i <= json.pulseNum; i++) {
+                    var pulseArr = data.splice(0, 5);
+                    arr.push({
+                            port: pulseArr[0],
+                            mpNo: pulseArr[1],
+                            type: type[pulseArr[2]],
+                            constant: (pulseArr[4] << 8) + pulseArr[3]
+                        }
+                    );
+                }
+                json.arr = arr;
+                return json;
+            },
+
+            /*          //终端状态量输入参数
+             fn12: function () {
+             var property = [];
+             var insert = [];
+             for (var i = 0; i < 8; i++) {
+             property.push((buff[19] >> i) % 2);
+             }
+             for (var i = 0; i < 8; i++) {
+             insert.push((buff[18] >> i) % 2);
+             }
+             return {json: {property: property, insert: insert}, key: 6};
+             },*/
+
+            //终端电压/电流模拟量配置参数
+            Fn13: function (data) {
+                var type = ['A相电压', 'B相电压', 'C相电压', 'A相电流', 'B相电流', 'C相电流'],
+                    json = {
+                        ACNum: data.splice(0, 1)
+                    },
+                    arr = [];
+                for (var i = 1; i <= json.ACNum; i++) {
+                    var ACArr = data.splice(0, 3);
+                    arr.push({
+                            portNum: ACArr[0],
+                            mpNum: ACArr[1],
+                            mcsx: type[ACArr[2] % 8]
+                        }
+                    );
+                }
+                json.arr = arr;
+                return json;
+            },
+
+            //终端总加组配置参数
+            Fn14: function (data) {
+                var json = {
+                        tgNum: data.splice(0, 1)[0]
+                    },
+                    arr = [];
+                for (var i = 1; i <= json.tgNum; i++) {
+                    var tgArr = data.splice(0, 2);
+                    var tgObj = {
+                        serialNum: tgArr[0],
+                        mpAmount: tgArr[1]
+                    };
+                    var dataJson = [];
+                    for (var j = 1; j <= tgObj.mpAmount; j++) {
+                        var mpArr = data.splice(0, 1);
+                        dataJson.push({
+                            mped_index: (mpArr[0] % 64) + 1,
+                            dir_flag: (mpArr[0] >> 6) % 2,
+                            calc_flag: (mpArr[0] >> 7) % 2
+                        });
+                    }
+                    tgObj['data'] = dataJson;
+                    arr.push(tgObj);
+                }
+                json['arr'] = arr;
+                return json
+            },
+
+            //有功总电能量差动越限事件参数设置
+            Fn15: function (data) {
+                var json = {
+                        configNum: data.splice(0, 1)[0]
+                    },
+                    arr = [],
+                    time = ['60分钟', '30分钟', '15分钟'];
+                for (var i = 1; i <= json.configNum; i++) {
+                    var dataArr = data.splice(0, 9),
+                        obj = {
+                            serialNum: dataArr[0],
+                            contrastNum: dataArr[1],
+                            consultNum: dataArr[2],
+                            timeCb: time[dataArr[3] % 4],
+                            methodSign: (dataArr[3] >> 7) == 0 ? '相对对比' : '绝对对比',
+                            relativeVal: dataArr[4],
+                            absoluteVal: tools.getDFA3(dataArr[5], dataArr[6], dataArr[7], dataArr[8])
+                        };
+                    arr.push(obj)
+                }
+                json['arr'] = arr;
+                return json
+            },
+
+            //虚拟专网用户名、密码
+            Fn16: function (data) {
+                var dataArr = data.splice(0, 64);
+                var json = {
+                    un: tools.getDFASC(dataArr.slice(0, 31)),
+                    psw: tools.getDFASC(dataArr.slice(32, 63))
+                };
+                return json;
+            },
+
+            //终端保安定值
+            Fn17: function (data) {
+                var dataArr = data.splice(0, 2);
+                var json = {
+                    sfv: tools.getDFA2(dataArr[0], dataArr[1])
+                };
+                return json;
+            },
+
+            //终端功控时段
+            Fn18: function (data) {
+                var dataArr = data.splice(0, 12);
+                var json = [];
+                var mode = ['不控制', '控制1', '控制2', '保留'];
+                for (var i = 0; i < 12; i++) {
+                    for (var j = 0; j < 8; j += 2) {
+                        json.push(mode[(dataArr[i] >> j) % 4])
+                    }
+                }
+                return json;
+            },
+
+            //终端时段功控定值浮动系数
+            Fn19: function (data) {
+                var json = {
+                    timesecCoe: tools.getDFA4(data.splice(0, 1)[0])
+                };
+                return json;
+            },
+
+            //终端月电能量控定值浮动系数
+            Fn20: function (data) {
+                var json = {
+                    timesecCoe: tools.getDFA4(data.splice(0, 1)[0])
+                };
+                return json;
+            },
+
+            //终端电能量费率时段和费率数
+            Fn21: function (data) {
+                var dataArr = data.splice(0, 49),
+                    json = {m: dataArr[48]},
+                    mNO = [];
+                for (var i = 0; i < 48; i++) {
+                    mNO.push(dataArr[i])
+                }
+                json.mNO = mNO;
+                return json;
+            },
+
+            //终端电能量费率
+            Fn22: function (data) {
+                var json = {m: data.splice(0, 1)[0]};
+
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 4);
+                    json['tariff' + i] = tools.getDFA3(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3])
+                }
+                return json;
+            },
+
+            //终端催费告警参数
+            Fn23: function (data) {
+                var dataArr = data.splice(0, 3);
+                var t = dataArr[0] + (dataArr[1] << 8) + (dataArr[2] << 16);
+                var json = {};
+                for (var i = 0; i < 24; i++) {
+                    json[i + ':00~' + (i + 1) + ':00'] = (t >> i) % 2 == 0 ? '不警告' : '警告'
+                }
+                return json;
+            },
+
+            //测量点基本参数
+            Fn25: function (data) {
+                var lineArr = ['备用', '三相三线', '三相四线', '单相表'],
+                    singlePh = ['不确定', 'A相', 'B相', 'C相'];
+                var dataArr = data.splice(0, 11);
+                var json = {
+                    mp_pt: dataArr[0] + (dataArr[1] << 8),
+                    mp_ct: dataArr[2] + (dataArr[3] << 8),
+                    RatedataArr: tools.getDFA7(dataArr[4], dataArr[5]),
+                    Rated_I: tools.getDFA22(dataArr[6]),
+                    Rted_Cp: tools.getDFA23(dataArr[7], dataArr[8], dataArr[9]),
+                    lineStyle: lineArr[dataArr[10] % 4], singlePh: singlePh[(dataArr[10
+                        ] >> 2) % 4]
+                };
+                return json;
+            },
+
+            //测量点限值参数
+            Fn26: function (data) {
+                var dataArr = data.splice(0, 57),
+                    json = {
+                        uUp: tools.getDFA7(dataArr[0], dataArr[1]),
+                        uLow: tools.getDFA7(dataArr[2], dataArr[3]),
+                        uBreak: tools.getDFA7(dataArr[4], dataArr[5]),
+                        uOver: tools.getDFA7(dataArr[6], dataArr[7]),
+                        uOverdataArrra: dataArr[8],
+                        uOverCoe: tools.getDFA5(dataArr[9], dataArr[10]),
+                        uOwe: tools.getDFA7(dataArr[11], dataArr[12]),
+                        uOwedataArrra: dataArr[13],
+                        uOweCoe: tools.getDFA5(dataArr[14], dataArr[15]),
+                        iOver: tools.getDFA25(dataArr[16], dataArr[17], dataArr[18]),
+                        iOverdataArrra: dataArr[19],
+                        iOverCoe: tools.getDFA5(dataArr[20], dataArr[21]),
+                        iUp: tools.getDFA25(dataArr[22], dataArr[23], dataArr[24]),
+                        iUpdataArrra: dataArr[25],
+                        iUpCoe: tools.getDFA5(dataArr[26], dataArr[27]),
+                        ioUp: tools.getDFA25(dataArr[28], dataArr[29], dataArr[30]),
+                        ioUpdataArrra: dataArr[31],
+                        ioUpCoe: tools.getDFA5(dataArr[32], dataArr[33]),
+                        viewOver: tools.getDFA23(dataArr[34], dataArr[35], dataArr[36]),
+                        viewOverdataArrra: dataArr[37],
+                        viewOverCoe: tools.getDFA5(dataArr[38], dataArr[39]),
+                        viewUp: tools.getDFA23(dataArr[40], dataArr[41], dataArr[42]),
+                        viewUpdataArrra: dataArr[43],
+                        viewUpCoe: tools.getDFA5(dataArr[44], dataArr[45]),
+                        uUnba: tools.getDFA5(dataArr[6], dataArr[47]),
+                        uUnbadataArrra: dataArr[48],
+                        uUnbaCoe: tools.getDFA5(dataArr[49], dataArr[50]),
+                        iUnba: tools.getDFA5(dataArr[51], dataArr[52]),
+                        iUnbadataArrra: dataArr[53],
+                        iUnbaCoe: tools.getDFA5(dataArr[54], dataArr[55]),
+                        lostUTime: dataArr[56]
+                    };
+                return json;
+            },
+
+            //测量点铜损、铁损参数
+            Fn27: function (data) {
+                var dataArr = data.splice(0, 24),
+                    json = {
+                        rA: tools.getDFA26(dataArr[0], dataArr[1]),
+                        xA: tools.getDFA26(dataArr[2], dataArr[3]),
+                        gA: tools.getDFA26(dataArr[4], dataArr[5]),
+                        bA: tools.getDFA26(dataArr[6], dataArr[7]),
+                        rB: tools.getDFA26(dataArr[8], dataArr[9]),
+                        xB: tools.getDFA26(dataArr[10], dataArr[11]),
+                        gB: tools.getDFA26(dataArr[12], dataArr[13]),
+                        bB: tools.getDFA26(dataArr[14], dataArr[15]),
+                        rC: tools.getDFA26(dataArr[16], dataArr[17]),
+                        xC: tools.getDFA26(dataArr[18], dataArr[19]),
+                        gC: tools.getDFA26(dataArr[20], dataArr[21]),
+                        bC: tools.getDFA26(dataArr[22], dataArr[23])
+                    };
+                return json;
+            },
+
+            //测量点功率因数分段限值
+            Fn28: function (data) {
+                var dataArr = data.splice(0, 4),
+                    json = {
+                        PfactorLimit1: tools.getDFA5(dataArr[0], dataArr[1]),
+                        PfactorLimit2: tools.getDFA5(dataArr[2], dataArr[3])
+                    }
+                return json
+            },
+
+            //终端当地电能表显示号
+            Fn29: function (data) {
+                var dataArr = data.splice(0, 12),
+                    json = {meterNO: tools.getDFASC(dataArr.slice(0, 12))};
+                return json;
+            },
+
+            //台区集中抄表停抄/投抄设置
+            Fn30: function (data) {
+                var dataArr = data.splice(0, 1),
+                    json = {IsConcInuse: dataArr[0]};
+                return json;
+            },
+
+            //终端抄表运行参数设置
+            Fn33: function (data) {
+                var json = {amount: data.splice(0, 1)[0], arr: []};
+                for (var i = 1; i <= json.amount; i++) {
+                    var dataArr = data.splice(0, 14);
+                    var m_r_date = [],
+                        temp = dataArr[3] + (dataArr[4] << 8) + (dataArr[5] << 16) + (dataArr[6] << 24);
+                    for (var l = 0; l < 32; l++) {
+                        if ((temp >> l) % 2 != 0) {
+                            m_r_date.push(l + 1);
+                        }
+                    }
+                    var dataObj = {
+                        port: dataArr[0],
+                        auto_m_r: dataArr[1] % 2,
+                        im: (dataArr[1] >> 1) % 2,
+                        fm: (dataArr[1] >> 2) % 2,
+                        bpr: (dataArr[1] >> 3) % 2,
+                        sm: (dataArr[1] >> 4) % 2,
+                        t_code: (dataArr[1] >> 5) % 2,
+                        date: m_r_date,
+                        readTime: tools.getDFA19(dataArr[7], dataArr[8]),
+                        interval: dataArr[9],
+                        airingTime: tools.getDFA18(dataArr[10], dataArr[11], dataArr[12]),
+                        interval_count: dataArr[13]
+                    };
+                    for (var j = 1; j <= dataObj.interval_count; j++) {
+                        var timeArr = data.splice(0, 4);
+                        dataObj['b_time' + j] = tools.getDFA19(timeArr[0], timeArr[1]);
+                        dataObj['e_time' + j] = tools.getDFA19(timeArr[2], timeArr[3]);
+                    }
+                    json.arr.push(dataObj);
+                }
+                return json
+            },
+
+            //集中器下行通信模块的参数设置
+            Fn34: function (data) {
+                var json = {amount: data.splice(0, 1)[0], arr: []};
+                var bit = ['5', '6', '7', '8'],
+                    baud = ['300', '600', '1200', '2400', '4800', '7200', '9600', '19200']
+
+                for (var i = 1; i <= json.amount; i++) {
+                    var dataArr = data.splice(0, 6);
+                    var dataObj = {
+                        port: dataArr[0],
+                        dataBit: bit[dataArr[1] % 4],
+                        check: (dataArr[1] >> 2) % 2 == 0 ? '偶' : '奇',
+                        exist: (dataArr[1] >> 3) % 2 == 0 ? '无' : '有',
+                        stop: (dataArr[1] >> 4) % 2 == 0 ? '1' : '2',
+                        baud: baud[dataArr[1] >> 5],
+                        bps: dataArr[2] + (dataArr[3] << 8) + (dataArr[4] << 16) + (dataArr[5] << 24)
+                    };
+                    json.arr.push(dataObj);
+                }
+                return json
+            },
+
+            //台区集中抄表重点户设置
+            Fn35: function (data) {
+                var json = {amount: data.splice(0, 1)[0], arr: []};
+                for (var i = 1; i <= json.amount; i++) {
+                    var dataArr = data.splice(0, 2);
+                    var dataObj = {
+                        ds: dataArr[0] + (dataArr[1] << 8)
+                    };
+                    json.arr.push(dataObj);
+                }
+                return json
+            },
+
+            //终端上行通信流量门限设置
+
+            Fn36: function (data) {
+                var dataArr = data.splice(0, 4);
+                var json = {
+                    MonthCommLimit: (dataArr[0]) + ((dataArr[1] * 256) ) +
+                    ((dataArr[2] * 65536)) + ((dataArr[3] * 16777216))
+                };
+                return json;
+            },
+
+            //终端上行通信流量门限设置
+            Fn37: function (data) {
+                var dataArr = data.splice(0, 7);
+                var json = {};
+                return json;
+            },
+
+            //1类数据配置设置 （在终端支持的1类数据配置内）
+
+            Fn38: function (data) {
+                var json = {
+                    bigNum: data.splice(0, 1)[0],
+                    amount: data.splice(0, 1)[0],
+                    arr: []
+                };
+                for (var i = 1; i <= json.amount; i++) {
+                    var dataObj = {
+                        smallNum: data.splice(0, 1)[0],
+                        mesBlockAm: data.splice(0, 1)[0],
+                        groupArr: []
+                    };
+                    for (var j = 1; j <= dataObj.mesBlockAm; j++) {
+                        var dataArr = data.splice(0, 1)[0],
+                            arr = [];
+                        for (var k = 0; k < 8; k++) {
+                            if ((dataArr >> k) % 2 == 1) {
+                                arr.push((j - 1) * 8 + (k + 1));
+                            }
+                        }
+                        dataObj['group' + j] = arr
+                    }
+                    json.arr.push(dataObj)
+                }
+                return json
+            },
+
+            //2类数据配置设置（在终端支持的2类数据配置内）
+
+            Fn39: function (data) {
+                var json = {
+                    bigNum: data.splice(0, 1)[0],
+                    amount: data.splice(0, 1)[0],
+                    arr: []
+                };
+                for (var i = 1; i <= json.amount; i++) {
+                    var dataObj = {
+                        smallNum: data.splice(0, 1)[0],
+                        mesBlockAm: data.splice(0, 1)[0],
+                        groupArr: []
+                    };
+                    for (var j = 1; j <= dataObj.mesBlockAm; j++) {
+                        var dataArr = data.splice(0, 1)[0],
+                            arr = [];
+                        for (var k = 0; k < 8; k++) {
+                            if ((dataArr >> k) % 2 == 1) {
+                                arr.push((j - 1) * 8 + (k + 1));
+                            }
+                        }
+                        dataObj['group' + j] = arr
+                    }
+                    json.arr.push(dataObj)
+                }
+                return json
+            },
+
+            //时段功控定值
+            //TODO 有问题，待优化
+            Fn41: function (data) {
+                var signData = data.splice(0, 1)[0],
+                    json = {sinaArr: []};
+                for (var i = 0; i < 3; i++) {
+                    if (signData >> 2 === 1){
+                        var timesecNum=i+1
+                        json.sinaArr.push(i + 1)
+                    }
+                };
+
+                arr['pc'] = [];
+                for (var i = 0, j = 0, l = 0; i < du.length - 21; i++, j++) {
+                    arr['pc'].push({});
+                    arr['pc'][j]['timesecNum'] = _.toArray(du[5 + i].toString(2)).reverse();
+                    var vNum = arr['pc'][j]['timesecNum'];
+                    arr['pc'][j]['pcSchema'] = [];
+                    for (var k = 0; k < 8; k++) {
+                        if (vNum[k] == 1) {
+                            arr['pc'][j]['pcSchema'].push(tools.getDFA2(du[6 + i + l], du[7 + i + l]));
+                            l += 2
+                        }
+                    }
+                    i += l
+                }
+                return {json: arr, key: 7 + i + l + 1};
+            },
+
+            //厂休功控参数
+            Fn42: function (data) {
+                var json = {
+                    pn: tools.getPn(du[0], du[1]),
+                    value: {
+                        facoff_fixed_value: tools.getDFA2(du[4], du[5]),
+                        facoff_hour: tools.bcd2b(du[7]),
+                        facoff_min: tools.bcd2b(du[6]),
+                        facoff_span: du[8],
+                        facoff_week0: du[9] % 2,
+                        facoff_week1: (du[9] >> 1) % 2,
+                        facoff_week2: (du[9] >> 2) % 2,
+                        facoff_week3: (du[9] >> 3) % 2,
+                        facoff_week4: (du[9] >> 4) % 2,
+                        facoff_week5: (du[9] >> 5) % 2,
+                        facoff_week6: (du[9] >> 6) % 2,
+                        facoff_week7: (du[9] >> 7) % 2
+                    }
+                };
+                return {json: json, key: 10};
+            },
+
+            //营业报停控参数
+            Fn44: function (data) {
+                var json = {
+                    pn: tools.getPn(du[0], du[1]),
+                    value: {
+                        buzstop_start_time: tools.getDFA20(du[4], du[5], du[6]),
+                        buzstop_end_time: tools.getDFA20(du[7], du[8], du[9]),
+                        buzstop_fixed_value: tools.getDFA2(du[10], du[11])
+                    }
+                };
+                return {json: json, key: 12};
+            },
+
+            //功控轮次设定
+            Fn45: function (data) {
+                var round = _.toArray(du[4].toString(2)),
+                    json = {
+                        round: round.reverse()
+                    };
+                return {json: json, key: 5};
+            },
+
+            //月电量控定值
+            Fn46: function (data) {
+                var json = {
+                    pn: tools.getPn(du[0], du[1]),
+                    value: tools.getDFA3(du[4], du[5], du[6], du[7])
+                };
+                return {json: json, key: 8};
+            },
+
+            //购电量（费）控参数
+            Fn47: function (data) {
+                var json = {
+                    pn: tools.getPn(du[0 + j], du[1 + j]),
+                    buyId: du[j + 4] + (du[j + 5] << 8) + (du[j + 6] << 16) + (du[j + 7] << 24),
+                    addFlag: du[j + 8] == 85 ? '追加' : '刷新',
+                    buyValue: tools.getDFA3(du[j + 9], du[j + 10], du[j + 11], du[j + 12]),
+                    alarmValue: tools.getDFA3(du[j + 13], du[j + 14], du[j + 15], du[j + 16]),
+                    jumpValue: tools.getDFA3(du[j + 17], du[j + 18], du[j + 19], du[j + 20])
+                };
+                return {json: json, key: 21};
+            },
+
+            //电控轮次设定
+            Fn48: function (data) {
+                var round = _.toArray(du[4].toString(2)),
+                    json = {
+                        round: round.reverse()
+                    };
+                return {json: json, key: 5};
+            },
+
+            //功控告警时间
+            Fn49: function (data) {
+                var m = du.length / 5;
+                var arr = [];
+                for (var i = 0; i < m; i++) {
+                    var j = 5 * i;
+                    arr.push({
+                        pn: tools.getPn(du[0 + j], du[1 + j]),
+                        AlarmTime: du[j + 4]
+                    })
+                }
+                return {json: arr, key: 5};
+            },
+
+            //终端声音告警允许∕禁止设置
+            Fn57: function (data) {
+                var t = du[4] + (du[5] << 8) + (du[6] << 16);
+                var arr = [];
+                for (var i = 0; i < 24; i++) {
+                    if ((t >> i) % 2 === 1)
+                        arr.push(i + ':00~' + (i + 1) + ':00允许警告');
+                }
+                return {json: arr, key: 7};
+            },
+
+            //终端自动保电参数
+            Fn58: function (data) {
+                return {json: du[4], key: 5};
+            },
+
+            //电能表异常判别阈值设定
+            Fn59: function (data) {
+                var json = {
+                    DiffoverLimit: tools.getDFA22(du[4]),
+                    fastLimit: tools.getDFA22(du[5]),
+                    stopLimit: du[6],
+                    adjLimit: du[7]
+                };
+                return {json: json, key: 8};
+            },
+
+            //谐波限值
+            Fn60: function (data) {
+                var arr = {
+                    totalAbovlUplmt: tools.getDFA5(du[4], du[5]),
+                    oddAbovlUplmt: tools.getDFA5(du[6], du[7]),
+                    evenAbovlUplmt: tools.getDFA5(du[8], du[9])
+                };
+                for (var i = 2; i < 20; i += 2) {
+                    arr['exp' + i + 'AbvolUplmt'] = tools.getDFA5(du[9 + (i - 1)], du[9 + i]);
+                }
+                for (var i = 3; i < 20; i += 2) {
+                    arr['exp' + i + 'AbvolUplmt'] = tools.getDFA5(du[26 + (i - 1)], du[26 + i]);
+                }
+                arr['totalAbcurUplmt'] = tools.getDFA6(du[46], du[47]);
+
+                for (var i = 2; i < 20; i += 2) {
+                    arr['exp' + i + 'AbcurUplmt'] = tools.getDFA6(du[47 + (i - 1)], du[47 + i]);
+                }
+                for (var i = 3; i < 20; i += 2) {
+                    arr['exp' + i + 'AbcurUplmt'] = tools.getDFA6(du[64 + (i - 1)], du[64 + i]);
+                }
+                return {json: arr, key: 64 + i + 1};
+            },
+
+            //直流模拟量接入参数
+            Fn61: function (data) {
+                var round = _.toArray(du[4].toString(2));
+                return {json: {round: round.reverse()}, key: 5};
+            },
+
+            //直流模拟量接入参数
+            Fn67: function (data) {
+                return {json: du[4], key: 5};
+            },
+
+            //定时上报2类数据任务启动/停止设置
+            Fn68: function (data) {
+                return {json: du[4], key: 5};
+            }
+        },
         AFN11: {},
         AFN12: {
             Fn2: function (data) {
@@ -945,7 +2225,6 @@ var json_hex = {
                 var valueArr = data.splice(0, 7);
                 json.pap_m_demand = tools.getDFA23(valueArr[0], valueArr[1], valueArr[2]);
                 json.pap_m_demand_time = tools.getDFA17(valueArr[3], valueArr[4], valueArr[5], valueArr[6]);
-
                 for (var i = 1; i <= json.m; i++) {
                     var mValueArr = data.splice(0, 7);
                     json['pap_m_d' + i] = tools.getDFA23(mValueArr[0], mValueArr[1], mValueArr[2]);
@@ -1712,15 +2991,15 @@ var json_hex = {
                 return json
             },
 
-            //日冻结正向无功（组合无功1）电能示值（总、费率1～M）
+            //日冻结正向有功（组合无功1）电能示值（总、费率1～M）
             Fn161: function (data) {
                 var json = {},
                     dateArr = data.splice(0, 9);
                 json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
                 json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
                 json.m = dateArr[8];
-                var valueArr=data.splice(0, 5);
-                json.pap_r=tools.getDFA14(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                var valueArr = data.splice(0, 5);
+                json.pap_r = tools.getDFA14(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
                 for (var i = 1; i <= json.m; i++) {
                     var mValueArr = data.splice(0, 5);
                     json['pap_r_m' + i] = tools.getDFA14(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3], mValueArr[4]);
@@ -1730,219 +3009,186 @@ var json_hex = {
 
             //日冻结正向无功（组合无功1）电能示值（总、费率1～M）
             Fn162: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: tools.getDFA20(du[4], du[5], du[6]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        prp_r: tools.getDFA11(du[13], du[14], du[15], du[16])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 4;
-                    json.Data['prp_r_m' + k] = tools.getDFA11(du[17 + m], du[18 + m], du[19 + m], du[20 + m])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 4);
+                json.prp_r = tools.getDFA11(valueArr[0], valueArr[1], valueArr[2], valueArr[3]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 4);
+                    json['prp_r_m' + i] = tools.getDFA11(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3]);
                 }
-                return {json: json, key: 20 + m + 1};
+                return json
             },
 
             //日冻结反向有功电能示值（总、费率1～M）
             Fn163: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: tools.getDFA20(du[4], du[5], du[6]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        rap_r: tools.getDFA14(du[13], du[14], du[15], du[16], du[17])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 5;
-                    json.Data['rap_r_m' + k] = tools.getDFA14(du[18 + m], du[19 + m], du[20 + m], du[21 + m], du[22 + m])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 5);
+                json.rap_r = tools.getDFA14(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 5);
+                    json['rap_r_m' + i] = tools.getDFA14(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3], mValueArr[4]);
                 }
-                return {json: json, key: 22 + m + 1};
+                return json
             },
 
             //日冻结反向无功（组合无功1）电能示值（总、费率1～M）
             Fn164: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: tools.getDFA20(du[4], du[5], du[6]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        rrp_r: tools.getDFA11(du[13], du[14], du[15], du[16])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 4;
-                    json.Data['rrp_r_m' + k] = tools.getDFA11(du[17 + m], du[18 + m], du[19 + m], du[20 + m])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 4);
+                json.rap_r = tools.getDFA11(valueArr[0], valueArr[1], valueArr[2], valueArr[3]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 4);
+                    json['rap_r_m' + i] = tools.getDFA11(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3]);
                 }
-                return {json: json, key: 20 + m + 1};
+                return json
             },
 
             //月冻结正向有功电能示值（总、费率1～M）
             Fn177: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[11],
-                        td: 2000 + tools.bcd2b(du[i + 5]) + '/' + tools.bcd2b(du[i + 4]) + '/1',
-                        date: tools.getDFA15(du[6], du[7], du[8], du[9], du[10]),
-                        pap_r: tools.getDFA14(du[12], du[13], du[14], du[15], du[16])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 5;
-                    json.Data['pap_r' + k] = tools.getDFA14(du[17 + m], du[18 + m], du[19 + m], du[20 + m], du[21 + m])
+                var json = {},
+                    dateArr = data.splice(0, 8);
+                json.td = tools.getDFA21(dateArr[0], dateArr[1]);
+                json.date = tools.getDFA15(dateArr[2], dateArr[3], dateArr[4], dateArr[5], dateArr[6]);
+                json.m = dateArr[7];
+                var valueArr = data.splice(0, 5);
+                json.pap_r = tools.getDFA14(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 5);
+                    json['pap_r_m' + i] = tools.getDFA14(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3], mValueArr[4]);
                 }
-                return {json: json, key: 21 + m + 1};
+                return json
             },
 
             //月冻结正向无功（组合无功1）电能示值（总、费率1～M）
             Fn178: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[11],
-                        td: 2000 + tools.bcd2b(du[i + 5]) + '/' + tools.bcd2b(du[i + 4]) + '/1',
-                        date: tools.getDFA15(du[6], du[7], du[8], du[9], du[10]),
-                        prp_r: tools.getDFA11(du[12], du[13], du[14], du[15])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 4;
-                    json.Data['prp_r' + k] = tools.getDFA11(du[16 + m], du[17 + m], du[18 + m], du[19 + m])
+                var json = {},
+                    dateArr = data.splice(0, 8);
+                json.td = tools.getDFA21(dateArr[0], dateArr[1]);
+                json.date = tools.getDFA15(dateArr[2], dateArr[3], dateArr[4], dateArr[5], dateArr[6]);
+                json.m = dateArr[7];
+                var valueArr = data.splice(0, 4);
+                json.prp_r = tools.getDFA11(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 4);
+                    json['prp_r_m' + i] = tools.getDFA11(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3]);
                 }
-                return {json: json, key: 19 + m + 1};
+                return json
             },
 
             //月冻结反向有功电能示值（总、费率1～M）
             Fn179: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[11],
-                        td: 2000 + tools.bcd2b(du[i + 5]) + '/' + tools.bcd2b(du[i + 4]) + '/1',
-                        date: tools.getDFA15(du[6], du[7], du[8], du[9], du[10]),
-                        rap_r: tools.getDFA14(du[12], du[13], du[14], du[15], du[16])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 5;
-                    json.Data['rap_r' + k] = tools.getDFA14(du[17 + m], du[18 + m], du[19 + m], du[20 + m], du[21 + m])
+                var json = {},
+                    dateArr = data.splice(0, 8);
+                json.td = tools.getDFA21(dateArr[0], dateArr[1]);
+                json.date = tools.getDFA15(dateArr[2], dateArr[3], dateArr[4], dateArr[5], dateArr[6]);
+                json.m = dateArr[7];
+                var valueArr = data.splice(0, 5);
+                json.rap_r = tools.getDFA14(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 5);
+                    json['rap_r_m' + i] = tools.getDFA14(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3], mValueArr[4]);
                 }
-                return {json: json, key: 21 + m + 1};
+                return json
             },
 
             //月冻结反向无功（组合无功1）电能示值（总、费率1～M）
             Fn180: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[11],
-                        td: 2000 + tools.bcd2b(du[i + 5]) + '/' + tools.bcd2b(du[i + 4]) + '/1',
-                        date: tools.getDFA15(du[6], du[7], du[8], du[9], du[10]),
-                        rrp_r: tools.getDFA11(du[12], du[13], du[14], du[15])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 4;
-                    json.Data['rrp_r' + k] = tools.getDFA11(du[16 + m], du[17 + m], du[18 + m], du[19 + m])
+                var json = {},
+                    dateArr = data.splice(0, 8);
+                json.td = tools.getDFA21(dateArr[0], dateArr[1]);
+                json.date = tools.getDFA15(dateArr[2], dateArr[3], dateArr[4], dateArr[5], dateArr[6]);
+                json.m = dateArr[7];
+                var valueArr = data.splice(0, 4);
+                json.rrp_r = tools.getDFA11(valueArr[0], valueArr[1], valueArr[2], valueArr[3], valueArr[4]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 4);
+                    json['rrp_r_m' + i] = tools.getDFA11(mValueArr[0], mValueArr[1], mValueArr[2], mValueArr[3]);
                 }
-                return {json: json, key: 19 + m + 1};
+                return json
             },
 
             //日冻结正向有功最大需量及发生时间（总、费率1～M）
             Fn185: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: 2000 + tools.bcd2b(du[6]) + '/' + tools.bcd2b(du[5]) + '/' + tools.bcd2b(du[4]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        pap_demand: tools.getDFA23(du[13], du[14], du[15]),
-                        pap_demand_time: tools.getDFA17(du[16], du[17], du[18], du[19])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 7;
-                    json.Data['pap_d' + k] = tools.getDFA23(du[20 + m], du[21 + m], du[22 + m]);
-                    json.Data['pap_d' + k + '_time'] = tools.getDFA17(du[23 + m], du[24 + m], du[25 + m], du[26])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 7);
+                json.pap_m_demand = tools.getDFA23(valueArr[0], valueArr[1], valueArr[2]);
+                json.pap_m_demand_time = tools.getDFA17(valueArr[3], valueArr[4], valueArr[5], valueArr[6]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 7);
+                    json['pap_m_d' + i] = tools.getDFA23(mValueArr[0], mValueArr[1], mValueArr[2]);
+                    json['pap_m_d' + i + '_time'] = tools.getDFA17(mValueArr[3], mValueArr[4], mValueArr[5], mValueArr[6]);
                 }
-                return {json: json, key: 26 + m + 1};
+                return json
             },
 
             //日冻结正向无功最大需量及发生时间（总、费率1～M）
             Fn186: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: 2000 + tools.bcd2b(du[6]) + '/' + tools.bcd2b(du[5]) + '/' + tools.bcd2b(du[4]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        prp_demand: tools.getDFA23(du[13], du[14], du[15]),
-                        prp_demand_time: tools.getDFA17(du[16], du[17], du[18], du[19])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 7;
-                    json.Data['prp_d' + k] = tools.getDFA23(du[20 + m], du[21 + m], du[22 + m]);
-                    json.Data['prp_d' + k + '_time'] = tools.getDFA17(du[23 + m], du[24 + m], du[25 + m], du[26])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 7);
+                json.prp_m_demand = tools.getDFA23(valueArr[0], valueArr[1], valueArr[2]);
+                json.prp_m_demand_time = tools.getDFA17(valueArr[3], valueArr[4], valueArr[5], valueArr[6]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 7);
+                    json['prp_m_d' + i] = tools.getDFA23(mValueArr[0], mValueArr[1], mValueArr[2]);
+                    json['prp_m_d' + i + '_time'] = tools.getDFA17(mValueArr[3], mValueArr[4], mValueArr[5], mValueArr[6]);
                 }
-                return {json: json, key: 26 + m + 1};
+                return json
             },
 
             //日冻结反向有功最大需量及发生时间（总、费率1～M）
             Fn187: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: 2000 + tools.bcd2b(du[6]) + '/' + tools.bcd2b(du[5]) + '/' + tools.bcd2b(du[4]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        rap_demand: tools.getDFA23(du[13], du[14], du[15]),
-                        rap_demand_time: tools.getDFA17(du[16], du[17], du[18], du[19])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 7;
-                    json.Data['rap_d' + k] = tools.getDFA23(du[20 + m], du[21 + m], du[22 + m]);
-                    json.Data['rap_d' + k + '_time'] = tools.getDFA17(du[23 + m], du[24 + m], du[25 + m], du[26])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 7);
+                json.rap_m_demand = tools.getDFA23(valueArr[0], valueArr[1], valueArr[2]);
+                json.rap_m_demand_time = tools.getDFA17(valueArr[3], valueArr[4], valueArr[5], valueArr[6]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 7);
+                    json['rap_m_d' + i] = tools.getDFA23(mValueArr[0], mValueArr[1], mValueArr[2]);
+                    json['rap_m_d' + i + '_time'] = tools.getDFA17(mValueArr[3], mValueArr[4], mValueArr[5], mValueArr[6]);
                 }
-                return {json: json, key: 26 + m + 1};
+                return json
             },
 
             //日冻结反向无功最大需量及发生时间（总、费率1～M）
             Fn188: function (data) {
-                var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    Fn: tools.getFn(du[2], du[3]),
-                    Data: {
-                        m: du[12],
-                        td: 2000 + tools.bcd2b(du[6]) + '/' + tools.bcd2b(du[5]) + '/' + tools.bcd2b(du[4]),
-                        date: tools.getDFA15(du[7], du[8], du[9], du[10], du[11]),
-                        rrp_demand: tools.getDFA23(du[13], du[14], du[15]),
-                        rrp_demand_time: tools.getDFA17(du[16], du[17], du[18], du[19])
-                    }
-                };
-                for (var k = 1; k <= json.Data.m; k++) {
-                    var m = (k - 1) * 7;
-                    json.Data['rrp_d' + k] = tools.getDFA23(du[20 + m], du[21 + m], du[22 + m]);
-                    json.Data['rrp_d' + k + '_time'] = tools.getDFA17(du[23 + m], du[24 + m], du[25 + m], du[26])
+                var json = {},
+                    dateArr = data.splice(0, 9);
+                json.td = tools.getDFA20(dateArr[0], dateArr[1], dateArr[2]);
+                json.date = tools.getDFA15(dateArr[3], dateArr[4], dateArr[5], dateArr[6], dateArr[7]);
+                json.m = dateArr[8];
+                var valueArr = data.splice(0, 7);
+                json.rrp_m_demand = tools.getDFA23(valueArr[0], valueArr[1], valueArr[2]);
+                json.rrp_m_demand_time = tools.getDFA17(valueArr[3], valueArr[4], valueArr[5], valueArr[6]);
+                for (var i = 1; i <= json.m; i++) {
+                    var mValueArr = data.splice(0, 7);
+                    json['rrp_m_d' + i] = tools.getDFA23(mValueArr[0], mValueArr[1], mValueArr[2]);
+                    json['rrp_m_d' + i + '_time'] = tools.getDFA17(mValueArr[3], mValueArr[4], mValueArr[5], mValueArr[6]);
                 }
-                return {json: json, key: 26 + m + 1};
+                return json
             }
         },
         AFN14: {},

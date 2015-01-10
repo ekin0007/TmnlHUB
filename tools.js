@@ -299,6 +299,12 @@ exports.tools = {
         return [dt1, dt2];
     },
 
+    //数据格式
+    getDFASC: function (buff) {
+        var arr = new Buffer(_.without(buff, 0x00));
+        return arr.toString('utf8')
+    },
+
     getDFA2: function (parameter1, parameter2) {
         if (parameter1 == 0xee || parameter1 == 0xff || parameter2 == 0xee) return null;
         var sfv = parseFloat(((this.bcd2b(parameter1) + (parameter2 % 16) * 100) * Math.pow(10, 4 - (parameter2 >> 5))).toFixed(3));
@@ -439,7 +445,7 @@ exports.tools = {
 
     getDFA19: function (parameter1, parameter2) {
         if (parameter1 == 0xee || parameter1 == 0xff || parameter2 == 0xee) return null;
-        return this.bcd2b(parameter2) + '时' + this.bcd2b(parameter1) + '分'
+        return {hour: this.bcd2b(parameter2), min: this.bcd2b(parameter1)}
     },
 
     getDFA20: function (parameter1, parameter2, parameter3) {
@@ -447,7 +453,7 @@ exports.tools = {
         return (2000 + this.bcd2b(parameter3)) + '/' + this.bcd2b(parameter2) + '/' + this.bcd2b(parameter1)
     },
     getDFA21: function (parameter1, parameter2) {
-        if (parameter1 == 0xee || parameter2 == 0xff || parameter2 == 0xee ) return null;
+        if (parameter1 == 0xee || parameter2 == 0xff || parameter2 == 0xee) return null;
         return (2000 + this.bcd2b(parameter2)) + '/' + this.bcd2b(parameter1)
     },
     getDFA22: function (parameter) {
