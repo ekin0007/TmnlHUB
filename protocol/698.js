@@ -1,5 +1,6 @@
 var _ = require('underscore'),
     cError = require('../error').Error,
+    _645 = require('./645'),
     tools = require('../tools').tools;
 
 var json_hex = {
@@ -3192,10 +3193,19 @@ var json_hex = {
                 return json
             }
         },
+
+        /**
+         * AFN14 请求3类数据（AFN=0EH）
+         */
         AFN14: {
+            /**
+             * Fn1 请求重要事件
+             * @param data
+             * @constructor
+             */
             Fn1: function (data) {
                 //4c 79 4b 4c 17 10 00 16 31 12 14 01 00 02 00 00 00 00 00 00 00 40
-                var json = {}, arr = data.splce(0, 4), eventLength = 0;
+                var json = {}, arr = data.splice(0, 4), eventLength = 0;
                 json.EC1 = arr[0];
                 json.EC2 = arr[1];
                 json.Pm = arr[2];
@@ -3213,12 +3223,65 @@ var json_hex = {
                         events: hex_json_event['ERC' + this.ERC](data.splice(0, this.Le))
                     });
                 });
+                return json;
+            },
+
+            /**
+             * Fn2 请求一般事件
+             * @param data
+             * @return {{}}
+             * @constructor
+             */
+            Fn2: function (data) {
+                return {};
             }
         },
+
+        /**
+         * AFN15
+         */
         AFN15: {},
-        AFN16: {}
+
+        /**
+         * AFN16 数据转发（AFN=10H）
+         */
+        AFN16: {
+            /**
+             * Fn1 透明转发
+             * @param data
+             * @functiona Fn1
+             */
+            Fn1: function (data) {
+                var json = {}, arr = data.splice(0, 3);
+                json.tmnl_comm_port = arr.shift();
+                json.trans_length = arr.shift() + (arr.shift() >> 8);
+                json.trans = _645._07.hex_json(data);
+                /*
+                                        00 00 01 00 1F 12 00 68 85 03 00 62 64 12 68 81 06 43 C3 35 33 33 33 8B 16
+                                        var b = a.splice(7, parseInt(a[5], 16))
+                                var errFrame = false, arr = du.slice(7, du.length), tFrame;
+
+                                if (arr[0] === 0xfe) {
+                                    tFrame = arr.slice(3, arr.length);
+                                } else {
+                                tFrame = arr;
+                                }
+                                var headIndex = tFrame.indexOf(0x68);
+                                if (tFrame[tFrame.length - 2] != tools.setCS(tFrame.slice(headIndex, tFrame.length - 2))) {
+                                    errFrame = true;
+                                }
+
+                                var json = {comm_port: du[4], count: du[5] + (du[6] >> 8), tFrame: tFrame, errFrame: errFrame};
+                                return {json: json, key: 7 + json.count};
+                */
+            }
+        }
     },
 
+    /**
+     * 3类数据
+     * @type {{ERC1: Function, ERC2: Function, ERC3: Function, ERC4: Function, ERC5: Function, ERC6: Function, ERC7: Function, ERC8: Function, ERC9: Function, ERC10: Function, ERC11: Function, ERC12: Function, ERC13: Function, ERC14: Function, ERC15: Function, ERC16: Function, ERC17: Function, ERC18: Function, ERC19: Function, ERC20: Function, ERC21: Function, ERC22: Function, ERC23: Function, ERC24: Function, ERC25: Function, ERC26: Function, ERC27: Function, ERC28: Function, ERC29: Function, ERC30: Function, ERC31: Function, ERC32: Function, ERC33: Function, ERC34: Function, ERC35: Function}}
+     */
     hex_json_event = {
         ERC1: function (data) {
         },
@@ -3226,14 +3289,20 @@ var json_hex = {
         ERC2: function (data) {
         },
 
+        /**
+         * ERC3：参数变更记录
+         * @param {Array} data
+         * @return {{event_time: Date 参数更新时间, addr: (*|T), alter_params_du: Array}}
+         * @constructor
+         */
         ERC3: function (data) {
             var len = data.length,
                 json = {
-                    params_alter_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                    event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
                     addr: data.shift(),
                     alter_params_du: []
                 };
-            _.times(len, function (i) {
+            _.times(len, function () {
                 json.alter_params_du.push({
                     pn: tools.getPn(data.shift(), data.shift()),
                     Fn: tools.getFn(data.shift(), data.shift())
@@ -3247,7 +3316,7 @@ var json_hex = {
 
         ERC5: function (data) {
             return {
-                trip_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
                 jump_round: _.toArray(data.shift().toString(2)).reverse(),
                 trip_power: tools.getDFA2(data.shift(), data.shift()),
                 jump_after2_power: tools.getDFA2(data.shift(), data.shift())
@@ -3259,7 +3328,7 @@ var json_hex = {
 
         ERC7: function (data) {
             return {
-                trip_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
                 group_total: data.shift(),
                 trip_round: _.toArray(data.shift().toString(2)).reverse(),
                 trip_class: _.toArray(data.shift().toString(2)).reverse(),
@@ -3307,7 +3376,7 @@ var json_hex = {
 
         ERC19: function (data) {
             return {
-                power_purchase_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
+                event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift(), data.shift()),
                 group_total: data.shift(),
                 odd_num: data.shift() + (data.shift() << 8) + (data.shift() << 16) + (data.shift() << 24),
                 add_flag: data.shift() == 85 ? '追加' : '刷新',
@@ -3323,12 +3392,24 @@ var json_hex = {
         },
 
         ERC21: function (data) {
+            return {
+                event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift()),
+                fail_code: data.shift()
+            };
         },
 
         ERC22: function (data) {
         },
 
         ERC23: function (data) {
+            return {
+                event_time: tools.getDFA15(data.shift(), data.shift(), data.shift(), data.shift()),
+                group_total: data.shift(),
+                trip_round: _.toArray(data.shift().toString(2)).reverse(),
+                trip_class: _.toArray(data.shift().toString(2)).reverse(),
+                alert_ene: tools.getDFA3(data.shift(), data.shift(), data.shift()),
+                alert_pc: tools.getDFA3(data.shift(), data.shift(), data.shift())
+            }
         },
 
         ERC24: function (data) {
@@ -3385,6 +3466,7 @@ exports.json_hex = function (json) {
     hex = hex.concat(0x68, tools.set_len(app), 0x68, app, tools.set_cs(app), tools.set_end());
     return new Buffer(hex);
 };
+
 /**
  *  * var packet = {
  *    A1: 4103,                        //行政区划码
