@@ -90,5 +90,3 @@ var _07 = {
     };
 
 exports._07 = _07;
-
-FUCK FUCK FUCK
