@@ -82,6 +82,21 @@ exports.tools = {
         }
     },
 
+    get_meter_comm_addr: function (arr) {
+        return this.bcd2b(arr[5] >> 4) * 100000000000 +
+            this.bcd2b(arr[5] % 16) * 10000000000 +
+            this.bcd2b(arr[4] >> 4) * 1000000000 +
+            this.bcd2b(arr[4] % 16) * 100000000 +
+            this.bcd2b(arr[3] >> 4) * 10000000 +
+            this.bcd2b(arr[3] % 16) * 1000000 +
+            this.bcd2b(arr[2] >> 4) * 100000 +
+            this.bcd2b(arr[2] % 16) * 10000 +
+            this.bcd2b(arr[1] >> 4) * 1000 +
+            this.bcd2b(arr[1] % 16) * 100 +
+            this.bcd2b(arr[0] >> 4) * 10 +
+            this.bcd2b(arr[0] % 16);
+    },
+
     bcd2b: function (bcd) {
         //hex to dec
         return Math.floor((bcd / 16)) * 10 + bcd % 16;
