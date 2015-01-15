@@ -3257,22 +3257,22 @@ var json_hex = {
                 json.trans_length = arr.shift() + (arr.shift() >> 8);
                 json.trans = _645._07.hex_json(data);
                 /*
-                                        00 00 01 00 1F 12 00 68 85 03 00 62 64 12 68 81 06 43 C3 35 33 33 33 8B 16
-                                        var b = a.splice(7, parseInt(a[5], 16))
-                                var errFrame = false, arr = du.slice(7, du.length), tFrame;
+                            00 00 01 00 1F 12 00 68 85 03 00 62 64 12 68 81 06 43 C3 35 33 33 33 8B 16
+                            var b = a.splice(7, parseInt(a[5], 16))
+                    var errFrame = false, arr = du.slice(7, du.length), tFrame;
 
-                                if (arr[0] === 0xfe) {
-                                    tFrame = arr.slice(3, arr.length);
-                                } else {
-                                tFrame = arr;
-                                }
-                                var headIndex = tFrame.indexOf(0x68);
-                                if (tFrame[tFrame.length - 2] != tools.setCS(tFrame.slice(headIndex, tFrame.length - 2))) {
-                                    errFrame = true;
-                                }
+                    if (arr[0] === 0xfe) {
+                        tFrame = arr.slice(3, arr.length);
+                    } else {
+                    tFrame = arr;
+                    }
+                    var headIndex = tFrame.indexOf(0x68);
+                    if (tFrame[tFrame.length - 2] != tools.setCS(tFrame.slice(headIndex, tFrame.length - 2))) {
+                        errFrame = true;
+                    }
 
-                                var json = {comm_port: du[4], count: du[5] + (du[6] >> 8), tFrame: tFrame, errFrame: errFrame};
-                                return {json: json, key: 7 + json.count};
+                    var json = {comm_port: du[4], count: du[5] + (du[6] >> 8), tFrame: tFrame, errFrame: errFrame};
+                    return {json: json, key: 7 + json.count};
                 */
             }
         }
