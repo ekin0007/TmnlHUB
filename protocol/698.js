@@ -15,8 +15,783 @@ var json_hex = {
         AFN1: {},
         AFN2: {},
         AFN3: {},
-        AFN4: {},
-        AFN5: {},
+        AFN4: {
+            Fn1: function (data) {
+                return [
+                    data.rts,
+                    data.delay_time,
+                    data.timeouts % 256,
+                    ((data.timeouts >> 8) >> 4) + (data.repeat << 4),
+                    data.data_con1 + (data.data_con2 << 1) + (data.data_con3 << 2),
+                    data.heart_beat
+                ]
+            },
+
+            Fn3: function (data) {
+                var apn = tools.asc(data.apn);
+                for (var i = apn.length; i < 16; i++) {
+                    apn.push(0);
+                }
+                return [].concat(
+                    data.master_ip.split('.'), data.master_port % 256, data.master_port >> 8,
+                    data.back_ip.split('.'), data.back_port % 256, data.back_port >> 8,
+                    apn
+                );
+            },
+
+            Fn4: function (data) {
+                var list = data.apn.split(""),
+                    nlist = data.asms.split("");
+                var tobin = function (a, b) {
+                    var f = (parseInt(a || 0) << 4) + parseInt(b || 0);
+                    return f || 0;
+                };
+
+
+                var apn = [].concat(tobin(list[0], list[1])).
+                    concat(tobin(list[2], list[3])).
+                    concat(tobin(list[4], list[5])).
+                    concat(tobin(list[6], list[7])).
+                    concat(tobin(list[8], list[9])).
+                    concat(tobin(list[10], list[11])).
+                    concat(tobin(list[12], list[13])).
+                    concat(tobin(list[14], list[15]));
+
+                var asms = [].concat(tobin(nlist[0], nlist[1])).
+                    concat(tobin(nlist[2], nlist[3])).
+                    concat(tobin(nlist[4], nlist[5])).
+                    concat(tobin(nlist[6], nlist[7])).
+                    concat(tobin(nlist[8], nlist[9])).
+                    concat(tobin(nlist[10], nlist[11])).
+                    concat(tobin(nlist[12], nlist[13])).
+                    concat(tobin(nlist[14], nlist[15]));
+                return apn.concat(asms);
+            },
+
+            Fn5: function (data) {
+                console.log([data.masn, data.masp % 256, data.masp >> 8])
+                return [data.masn, data.masp % 256, data.masp >> 8];
+            },
+
+            Fn6: function (data) {
+                return [
+                    data.tgadd1 % 256, data.tgadd1 >> 8,
+                    data.tgadd2 % 256, data.tgadd2 >> 8,
+                    data.tgadd3 % 256, data.tgadd3 >> 8,
+                    data.tgadd4 % 256, data.tgadd4 >> 8,
+                    data.tgadd5 % 256, data.tgadd5 >> 8,
+                    data.tgadd6 % 256, data.tgadd6 >> 8,
+                    data.tgadd7 % 256, data.tgadd7 >> 8,
+                    data.tgadd8 % 256, data.tgadd8 >> 8
+                ];
+            },
+
+            Fn7: function (data) {
+                console.log(data)
+                var a = [data.tip1, data.tip2, data.tip3, data.tip4,
+                    data.mask1, data.mask2, data.mask3, data.mask4,
+                    data.gw1, data.gw2, data.gw3, data.gw4, data.psk,
+                    data.psip1, data.psip2, data.psip3, data.psip4, data.psport % 256, data.psport >> 8,
+                    data.pscm, data.unl];
+                var b = tools.asc(data.username).concat(data.pswlen).concat(tools.asc(data.psw)).concat(data.tlport % 256, data.tlport >> 8);
+                var a = a.concat(b);
+                return a
+            },
+
+            Fn8: function (data) {
+                var check = function (c) {
+                    if (c == null) {
+                        return 0;
+                    } else {
+                        var temp = [].concat(c);
+                        var n1 = '';
+                        for (var i = 7; i >= 0; i--) {
+                            var k = false;
+                            for (var j = 0; j < temp.length; j++) {
+                                if (i == temp[j]) {
+                                    var k = true;
+                                }
+                            }
+                            n1 += k == true ? 1 : 0;
+                        }
+                        return n1;
+                    }
+                };
+                var wm = (data.txms << 7) + (data.zdgzms << 4) + parseInt(data.khjms);
+                var other = [data.rdi % 256, data.rdi >> 8, data.rdf, data.vdt];
+                var clock = [
+                    parseInt(check(data.con1), 2),
+                    parseInt(check(data.con2), 2),
+                    parseInt(check(data.con3), 2)
+                ];
+                return [].concat(wm).concat(other).concat(clock);
+            },
+
+            Fn9: function (data) {
+//                console.log(data)
+                var check = function (c) {
+                    if (c == null) {
+                        return 0;
+                    } else {
+                        var temp = [].concat(c);
+                        var n1 = '';
+                        for (var i = 7; i >= 0; i--) {
+                            var k = false;
+                            for (var j = 0; j < temp.length; j++) {
+                                if (i == temp[j]) {
+                                    var k = true;
+                                }
+                            }
+                            n1 += k == true ? 1 : 0;
+                        }
+                        return n1;
+                    }
+                };
+                return [
+                    parseInt(check(data.eff1), 2), parseInt(check(data.eff2), 2),
+                    parseInt(check(data.eff3), 2), parseInt(check(data.eff4), 2),
+                    parseInt(check(data.eff5), 2), parseInt(check(data.eff6), 2),
+                    parseInt(check(data.eff7), 2), parseInt(check(data.eff8), 2),
+                    parseInt(check(data.imp1), 2), parseInt(check(data.imp2), 2),
+                    parseInt(check(data.imp3), 2), parseInt(check(data.imp4), 2),
+                    parseInt(check(data.imp5), 2), parseInt(check(data.imp6), 2),
+                    parseInt(check(data.imp7), 2), parseInt(check(data.imp8), 2)
+                ]
+            },
+
+            Fn10: function (data) {
+                var arr = [data.len % 256, data.len >> 8];
+                for (var i = 0; i < data.len; i++) {
+                    arr.push(
+                        data.points[i][0] % 256, data.points[i][0] >> 8,
+                        data.points[i][1] % 256, data.points[i][1] >> 8,
+                        (data.points[i][2] << 5) + data.points[i][3],
+                        data.points[i][4]
+                    );
+                    if (data.points[i][5].toString().toUpperCase() == 'AAAAAAAAAAAA') {
+                        arr.push(0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa);
+                    } else {
+                        arr.push(
+                            tools.b2bcd(Math.floor(data.points[i][5] % 100)),
+                            tools.b2bcd(Math.floor(data.points[i][5] % 10000 / 100)),
+                            tools.b2bcd(Math.floor(data.points[i][5] % 1000000 / 10000)),
+                            tools.b2bcd(Math.floor(data.points[i][5] % 100000000 / 1000000)),
+                            tools.b2bcd(Math.floor(data.points[i][5] % 10000000000 / 100000000)),
+                            tools.b2bcd(Math.floor(data.points[i][5] % 1000000000000 / 10000000000))
+                        );
+                    }
+                    arr.push(Math.floor(data.points[i][6] % 100),
+                        Math.floor(data.points[i][6] % 10000 / 100),
+                        Math.floor(data.points[i][6] % 1000000 / 10000),
+                        Math.floor(data.points[i][6] % 100000000 / 1000000),
+                        Math.floor(data.points[i][6] % 10000000000 / 100000000),
+                        Math.floor(data.points[i][6] % 1000000000000 / 10000000000),
+                        data.points[i][7],
+                        (data.points[i][8] << 2) + data.points[i][9],
+                        tools.b2bcd(Math.floor(data.points[i][10] % 100)),
+                        tools.b2bcd(Math.floor(data.points[i][10] % 10000 / 100)),
+                        tools.b2bcd(Math.floor(data.points[i][10] % 1000000 / 10000)),
+                        tools.b2bcd(Math.floor(data.points[i][10] % 100000000 / 1000000)),
+                        tools.b2bcd(Math.floor(data.points[i][10] % 10000000000 / 100000000)),
+                        tools.b2bcd(Math.floor(data.points[i][10] % 1000000000000 / 10000000000)),
+                        (data.points[i][11] << 4) + data.points[i][12]
+                    );
+                }
+                return arr;
+            },
+
+            Fn11: function (data) {
+                var value = [data.mcls];
+                if (data.mcls == 1) {
+                    value.push(data.port);
+                    value.push(data.cldh);
+                    value.push(data.mcsx);
+                    value.push(data.dbcs % 256);
+                    value.push(data.dbcs >> 8);
+                } else {
+                    for (var i = 0; i < data.mcls; i++) {
+                        value.push(data.port[i]);
+                        value.push(data.cldh[i]);
+                        value.push(data.mcsx[i]);
+                        value.push(data.dbcs[i] % 256);
+                        value.push(data.dbcs[i] >> 8);
+                    }
+                }
+                return value;
+            },
+
+            Fn12: function (data) {
+                var check = function (c) {
+                    if (c == null) {
+                        return 0;
+                    } else {
+                        var temp = [].concat(c);
+                        var n1 = '';
+                        for (var i = 7; i >= 0; i--) {
+                            var k = false;
+                            for (var j = 0; j < temp.length; j++) {
+                                if (i == temp[j]) {
+                                    var k = true;
+                                }
+                            }
+                            n1 += k == true ? 1 : 0;
+                        }
+                        return n1;
+                    }
+                };
+                return [
+                    parseInt(check(data.insert), 2), parseInt(check(data.property), 2)
+                ]
+            },
+
+            Fn13: function (data) {
+                var value = [data.pzls];
+                if (data.pzls == 1) {
+                    value.push(data.port);
+                    value.push(data.cldh);
+                    value.push(data.sx);
+                } else {
+                    for (var i = 0; i < data.pzls; i++) {
+                        value.push(data.port[i]);
+                        value.push(data.cldh[i]);
+                        value.push(data.sx[i]);
+                    }
+                }
+                return value
+            },
+
+            /*Fn14:终端总加组配置参数,
+             字段含义:agNum:总加组序号， pnNum:测量点序号，powerType:正向/反向，ass:运算符标志
+             */
+            Fn14: function (data) {
+                /* var data1 = [
+                 {agNum: 1, pnArr: [
+                 {pnNum: 1, powerType: 0, aas: 1},
+                 {pnNum: 2, powerType: 1, aas: 1},
+                 {pnNum: 3, powerType: 0, aas: 0}
+                 ]},
+                 {agNum: 2, pnArr: [
+                 {pnNum: 1, powerType: 0, aas: 1},
+                 {pnNum: 2, powerType: 1, aas: 1},
+                 {pnNum: 3, powerType: 0, aas: 0},
+                 {pnNum: 4, powerType: 0, aas: 1}
+                 ]},
+                 {agNum: 3, pnArr: [
+                 {pnNum: 1, powerType: 1, aas: 1},
+                 {pnNum: 2, powerType: 0, aas: 0},
+                 {pnNum: 3, powerType: 1, aas: 0},
+                 {pnNum: 4, powerType: 0, aas: 1}
+                 ]}
+                 ];*/
+//                console.log(data)
+                var arr = [];
+                arr.push(data.length);
+                for (var i = 0; i < data.length; i++) {
+                    arr.push(
+                        data[i].agNum,
+                        data[i].pnArr.length
+                    );
+                    for (var j = 0; j < data[i].pnArr.length; j++) {
+                        arr.push(
+                            ((data[i].pnArr[j].pnNum - 1) % 64) +
+                            (data[i].pnArr[j].powerType << 6) +
+                            (data[i].pnArr[j].aas << 7)
+                        )
+                        /*  arr.push(
+                         ((data[i].pnJson.pnNum - 1) % 64) +
+                         (data[i].pnJson.powerType << 6) +
+                         (data[i].pnJson.aas << 7)
+                         )*/
+                    }
+                }
+//                console.log(arr)
+                return arr;
+            },
+
+            /*Fn14:有功总电能量差动越限事件参数设置,
+             字段含义:
+             guardInd:差动组序号， indexCon:对比的总加组序号，indexRef:参照的总加组序号，timeCb:电能量的时间跨度
+             methodSign:对比方法标志, relativeVal:相对偏差值, absoluteVal：绝对偏差值， unit：单位
+             */
+            Fn15: function (data) {
+                /*  var value = [data.pzsl];
+                 if (data.pzsl == 1) {
+                 value.push(data.serial);
+                 value.push(data.cs);
+                 value.push(data.rs,
+                 (data.ms << 7) + data.tk,
+                 data.rdv,
+                 ((Math.floor(Math.abs(data.adv) % 100) / 10) << 4) + Math.abs(data.adv) % 10,
+                 ((Math.floor(Math.abs(data.adv) / 1000) % 10) << 4) + Math.floor(Math.abs(data.adv) / 100) % 10,
+                 ((Math.floor(Math.abs(data.adv) / 100000) % 10) << 4) + Math.floor(Math.abs(data.adv) / 10000) % 10,
+                 Math.floor(Math.abs(data.adv) / 1000000) + ((data.adv > 0 ? 0 : 1) << 4) + (data.d << 6)
+                 );
+
+                 } else {
+                 for (var i = 0; i < data.pzsl; i++) {
+                 value.push(
+                 data.serial[i],
+                 data.cs[i],
+                 data.rs[i],
+                 (data.ms[i] << 7) + data.tk[i],
+                 data.rdv[i],
+                 ((Math.floor(Math.abs(data.adv[i]) % 100) / 10) << 4) + Math.abs(data.adv[i]) % 10,
+                 ((Math.floor(Math.abs(data.adv[i]) / 1000) % 10) << 4) + Math.floor(Math.abs(data.adv[i]) / 100) % 10,
+                 ((Math.floor(Math.abs(data.adv[i]) / 100000) % 10) << 4) + Math.floor(Math.abs(data.adv[i]) / 10000) % 10,
+                 Math.floor(Math.abs(data.adv[i]) / 1000000) + ((data.adv[i] > 0 ? 0 : 1) << 4) + (data.d[i] << 6)
+                 );
+                 }
+                 }
+                 return value;*/
+                var data =
+                    [
+                        {
+                            guardInd: 1,
+                            indexCon: 1,
+                            indexRef: 3,
+                            timeCb: 0,
+                            methodSign: 0,
+                            relativeVal: 60,
+                            absoluteVal: 99999,
+                            unit: 1
+                        },
+                        {
+                            guardInd: 2,
+                            indexCon: 1,
+                            indexRef: 2,
+                            timeCb: 1,
+                            methodSign: 1,
+                            relativeVal: 50,
+                            absoluteVal: 999,
+                            unit: 0
+                        }
+                    ];
+                var arr = [];
+                arr.push(data.length);
+                for (var i = 0; i < data.length; i++) {
+                    arr.push(
+                        data[i].guardInd,
+                        data[i].indexCon,
+                        data[i].indexRef,
+                        data[i].timeCb + (data[i].methodSign << 7),
+                        data[i].relativeVal,
+                        tools.b2bcd(data[i].absoluteVal % 100),
+                        tools.b2bcd(Math.floor(data[i].absoluteVal / 100) % 100),
+                        tools.b2bcd(Math.floor(data[i].absoluteVal / 10000) % 100),
+                        tools.b2bcd(Math.floor(data[i].absoluteVal / 1000000) % 100) + (data[i].unit << 6)
+                    );
+                }
+                return arr
+            },
+
+            Fn16: function (data) {
+                var un = tools.asc(data.un);
+                for (var i = un.length; i < 32; i++) {
+                    un.push('0H');
+                }
+                var psw = tools.asc(data.psw);
+                for (var i = psw.length; i < 32; i++) {
+                    psw.push('0H');
+                }
+                return un.concat(psw);
+            },
+
+            Fn17: function (data) {
+                return tools.setDFA2(data.sfv)
+            },
+
+            Fn19: function (data) {
+                return [tools.b2bcd(data.timesecCoe % 128) + (data.s << 7)]
+            },
+
+            Fn20: function (data) {
+                return [tools.b2bcd(data.timesecCoe % 128) + (data.s << 7)]
+            },
+
+            Fn22: function (data) {
+                var arr = [4];
+                var unit = 0 << 6;
+                if (data.tariff_unit1 === 1) {
+                    data.tariff_value1 *= 1000;
+                    data.tariff_value2 *= 1000;
+                    data.tariff_value3 *= 1000;
+                    data.tariff_value4 *= 1000;
+                }
+                arr.push(tools.b2bcd(data.tariff_value1 % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value1 / 100) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value1 / 10000) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value1 / 1000000) % 100) + unit);
+
+                arr.push(tools.b2bcd(data.tariff_value2 % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value2 / 100) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value2 / 10000) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value2 / 1000000) % 100) + unit);
+
+                arr.push(tools.b2bcd(data.tariff_value3 % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value3 / 100) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value3 / 10000) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value3 / 1000000) % 100) + unit);
+
+                arr.push(tools.b2bcd(data.tariff_value4 % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value4 / 100) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value4 / 10000) % 100),
+                    tools.b2bcd(Math.floor(data.tariff_value4 / 1000000) % 100) + unit);
+
+                return arr;
+            },
+
+            Fn25: function (data) {
+                var arr = [];
+                arr.push(
+                    data.mp_pt % 256,
+                    data.mp_pt >> 8,
+                    data.mp_ct % 256,
+                    data.mp_ct >> 8,
+                    0, 34, 21, 0, 153, 0, 10
+                )
+                return arr
+            },
+
+            Fn33: function (data) {
+
+                return [01, 01, 00, 00, 03, 00, 00, 00, 07, 07, 05, 01, 01, 01, 01, 07, 07, 08, 08]
+            },
+
+            Fn35: function (data) {
+                var value = [data.tiun];
+                if (data.tiun == 1) {
+                    value.push(data.ds % 256);
+                    value.push(data.ds >> 8);
+                } else {
+                    for (var i = 0; i < data.tiun; i++) {
+                        value.push(data.ds[i] % 256);
+                        value.push(data.ds[i] >> 8);
+                    }
+                }
+                return value;
+            },
+
+            Fn36: function (data) {
+                var value = [];
+                value.push(
+                    data.llmx % 256,
+                    (data.llmx >> 8) % 256,
+                    (data.llmx >> 16) % 256,
+                    (data.llmx >> 24) % 256
+                );
+                return value;
+            },
+
+            Fn41: function (data) {
+                var arr = [];
+                arr.push(data.planSign);
+                for (var i = 0; i < data.pc.length; i++) {
+                    var conSign = '';
+                    for (var j = 7; j >= 0; j--) {
+                        conSign += data.pc[i].timesecNum[j];
+                    }
+                    arr.push(parseInt(conSign, 2));
+                    for (var k = 0; k < data.pc[i].pcSchema.length; k++) {
+                        arr = arr.concat(tools.setDFA2(data.pc[i].pcSchema[k]));
+                    }
+                }
+                return arr
+            },
+
+
+            Fn42: function (data) {
+                console.log(data)
+                var conSign = '';
+                for (var i = 7; i >= 0; i--) {
+                    conSign += data['facoff_week' + i];
+                }
+                /* console.log([].concat(
+                 a2function(data.cxkdz),
+                 tools.b2bcd(data.min),
+                 tools.b2bcd(data.hour),
+                 data.letime,
+                 [parseInt(conSign, 2)]
+                 ));*/
+                return [].concat(
+                    tools.setDFA2(data.facoff_fixed_value),
+                    tools.b2bcd(data.facoff_min),
+                    tools.b2bcd(data.facoff_hour),
+                    data.facoff_span,
+                    [parseInt(conSign, 2)]
+                )
+            },
+
+
+            Fn43: function (data) {
+                return [data.time];
+            },
+
+            Fn44: function (data) {
+                return [].concat(
+                    tools.setDFA20(data.buzstop_start_time),
+                    tools.setDFA20(data.buzstop_end_time),
+                    tools.setDFA2(data.buzstop_fixed_value)
+                )
+            },
+
+            Fn45: function (data) {
+                //
+                var conSign = '';
+                for (var i = 7; i >= 0; i--) {
+                    conSign += data.con[i];
+                }
+
+                return [parseInt(conSign, 2)]
+            },
+
+            Fn46: function (data) {
+                return tools.setDFA3(data)
+            },
+
+            Fn47: function (data) {
+                var gddh = [
+                        data.gddh % 256,
+                        (data.gddh >> 8) % 256,
+                        (data.gddh >> 16) % 256,
+                        (data.gddh >> 24) % 256
+                    ],
+                    gdlz = [
+                        tools.b2bcd(data.gdlz % 100),
+                        tools.b2bcd(Math.floor(data.gdlz / 100) % 100),
+                        tools.b2bcd(Math.floor(data.gdlz / 10000) % 100),
+                        tools.b2bcd(Math.floor(data.gdlz / 1000000) % 100) + (data.gdlunit << 6)],
+                    bjmxz = [
+                        tools.b2bcd(data.bjmxz % 100),
+                        tools.b2bcd(Math.floor(data.bjmxz / 100) % 100),
+                        tools.b2bcd(Math.floor(data.bjmxz / 10000) % 100),
+                        tools.b2bcd(Math.floor(data.bjmxz / 1000000) % 100) + (data.bjmxzunit << 6)
+                    ],
+                    tzmx = [
+                        tools.b2bcd(data.tzmx % 100),
+                        tools.b2bcd(Math.floor(data.tzmx / 100) % 100),
+                        tools.b2bcd(Math.floor(data.tzmx / 10000) % 100),
+                        tools.b2bcd(Math.floor(data.tzmx / 1000000) % 100) + (data.tzmxzunit << 6)
+                    ];
+                return [].concat(gddh, data.sign, gdlz, bjmxz, tzmx);
+            },
+
+            Fn48: function (data) {
+                var conSign = '';
+                for (var i = 7; i >= 0; i--) {
+                    conSign += data.con[i];
+                }
+                return [parseInt(conSign, 2)]
+            },
+
+            Fn49: function (data) {
+                return [data.time];
+            },
+
+            Fn57: function (data) {
+                var time1 = '',
+                    time2 = '',
+                    time3 = '';
+                for (var i = 7; i >= 0; i--) {
+                    time1 += data.time[i];
+                    time2 += data.time[i + 8];
+                    time3 += data.time[i + 16];
+                }
+                return [(parseInt(time1, 2)), (parseInt(time2, 2)), (parseInt(time3, 2))]
+            },
+
+
+            Fn58: function (data) {
+                return [data.time];
+            },
+
+            Fn59: function (data) {
+                return [tools.b2bcd(data.cc * 10), tools.b2bcd(data.fz * 10), data.tz, data.xs];
+            },
+
+            Fn67: function (data) {
+                return [data.rs];
+            },
+
+            Fn68: function (data) {
+                return [data.rs];
+            }
+        },
+        AFN5: {
+            Fn1: function (data) {
+                return [(data.alertTime << 4) + data.limitTime % 16];
+            },
+
+            Fn2: function (data) {
+                return []
+            },
+
+            Fn9: function (data) {
+                var conSign = '';
+                for (var i = 7; i >= 0; i--) {
+                    conSign += data.con[i];
+                }
+                return [parseInt(conSign, 2), data.planNum - 1]
+            },
+
+            Fn10: function (data) {
+                return []
+            },
+
+            Fn11: function (data) {
+                return []
+            },
+
+            Fn12: function (data) {
+                return [
+                    data.power_down_fd_time,
+                    tools.setDFA4({
+                        power_down_coe_unit: data.power_down_coe_unit,
+                        power_down_coe_value: data.power_down_coe_value
+                    }),
+                    data.tg_pap_delay_time,
+                    data.power_down_control_time,
+                    data.power_down_alarm_value1,
+                    data.power_down_alarm_value2,
+                    data.power_down_alarm_value3,
+                    data.power_down_alarm_value4
+                ]
+            },
+
+            Fn15: function (data) {
+                return []
+            },
+
+            Fn16: function (data) {
+                return []
+            },
+
+            Fn17: function (data) {
+                return []
+            },
+
+            Fn18: function (data) {
+                return []
+            },
+
+            Fn19: function (data) {
+                return []
+            },
+            Fn20: function (data) {
+                return []
+            },
+            Fn23: function (data) {
+                return []
+            },
+
+            Fn24: function (data) {
+                return []
+            },
+
+            Fn25: function (data) {
+                return [data.time]
+            },
+
+            Fn26: function (data) {
+                return []
+            },
+
+            Fn27: function (data) {
+                return []
+            },
+
+            Fn28: function (data) {
+                return []
+            },
+
+            Fn29: function (data) {
+                return []
+            },
+
+            Fn31: function (data) {
+                return [
+                    tools.b2bcd(data.second),
+                    tools.b2bcd(data.minute),
+                    tools.b2bcd(data.hour),
+                    tools.b2bcd(data.day),
+                    (data.month % 10) + (Math.floor((data.month / 10)) << 4) + (data.week << 5),
+                    tools.b2bcd(data.year)
+                ]
+            },
+
+            Fn32: function (data) {
+                console.log([data.num % 16 + (data.type << 4), data.china.length, data.china])
+                return [data.num % 16 + (data.type << 4), data.china.length, data.china]
+            },
+
+            Fn33: function (data) {
+                return []
+            },
+
+            Fn34: function (data) {
+                return []
+            },
+
+            Fn35: function (data) {
+                return []
+            },
+
+            Fn36: function (data) {
+                return []
+            },
+
+            Fn37: function (data) {
+                return []
+            },
+
+            Fn38: function (data) {
+                return []
+            },
+
+            Fn39: function (data) {
+                return []
+            },
+
+            Fn41: function (data) {
+                var conInput1 = '';
+                var conInput2 = '';
+                for (var i = 7; i >= 0; i--) {
+                    conInput1 += data.con[i];
+                    conInput2 += data.con[i + 8];
+                }
+                return [(parseInt(conInput1, 2)), (parseInt(conInput2, 2))]
+
+            },
+
+            Fn42: function (data) {
+                var conExcision1 = '';
+                var conExcision2 = '';
+                for (var i = 7; i >= 0; i--) {
+                    conExcision1 += data.con[i];
+                    conExcision2 += data.con[i + 8];
+                }
+                return [(parseInt(conExcision1, 2)), (parseInt(conExcision2, 2))]
+            },
+
+            Fn49: function (data) {
+                return [data.pause]
+            },
+
+            Fn50: function (data) {
+                return [data.recover]
+            },
+
+            Fn51: function (data) {
+                return [data.anew]
+            },
+
+            Fn52: function (data) {
+                return [data.initialise]
+            },
+
+            Fn53: function (data) {
+                return [data.delete]
+            }
+        },
         AFN6: {},
         AFN8: {},
         AFN9: {
@@ -793,7 +1568,14 @@ var json_hex = {
         AFN16: {}
     },
     hex_json = {
-        AFN0: {},
+        AFN0: {
+            Fn1: function () {
+                return '确认'
+            },
+            Fn2: function () {
+                return '否认'
+            }
+        },
         AFN1: {},
         AFN2: {
             //登录帧
@@ -1577,8 +2359,7 @@ var json_hex = {
                 for (var i = 1; i <= json.amount; i++) {
                     var dataObj = {
                         smallNum: data.splice(0, 1)[0],
-                        mesBlockAm: data.splice(0, 1)[0],
-                        groupArr: []
+                        mesBlockAm: data.splice(0, 1)[0]
                     };
                     for (var j = 1; j <= dataObj.mesBlockAm; j++) {
                         var dataArr = data.splice(0, 1)[0],
@@ -1606,8 +2387,7 @@ var json_hex = {
                 for (var i = 1; i <= json.amount; i++) {
                     var dataObj = {
                         smallNum: data.splice(0, 1)[0],
-                        mesBlockAm: data.splice(0, 1)[0],
-                        groupArr: []
+                        mesBlockAm: data.splice(0, 1)[0]
                     };
                     for (var j = 1; j <= dataObj.mesBlockAm; j++) {
                         var dataArr = data.splice(0, 1)[0],
@@ -1625,189 +2405,159 @@ var json_hex = {
             },
 
             //时段功控定值
-            //TODO 有问题，待优化
             Fn41: function (data) {
-                var signData = data.splice(0, 1)[0],
+                var signData = data.shift(),
                     json = {sinaArr: []};
                 for (var i = 0; i < 3; i++) {
-                    if (signData >> 2 === 1) {
-                        var timesecNum = i + 1
-                        json.sinaArr.push(i + 1)
-                    }
-                }
-                ;
-
-                arr['pc'] = [];
-                for (var i = 0, j = 0, l = 0; i < du.length - 21; i++, j++) {
-                    arr['pc'].push({});
-                    arr['pc'][j]['timesecNum'] = _.toArray(du[5 + i].toString(2)).reverse();
-                    var vNum = arr['pc'][j]['timesecNum'];
-                    arr['pc'][j]['pcSchema'] = [];
-                    for (var k = 0; k < 8; k++) {
-                        if (vNum[k] == 1) {
-                            arr['pc'][j]['pcSchema'].push(tools.getDFA2(du[6 + i + l], du[7 + i + l]));
-                            l += 2
+                    if ((signData >> i) % 2 === 1) {
+                        var timesecObj = {plantNum: i + 1, timesecArr: []},
+                            timesecNum = data.shift();
+                        for (var j = 0; j < 8; j++) {
+                            if ((timesecNum >> j ) % 2 === 1) {
+                                var obj = {timesecNo: j + 1};
+                                obj['value'] = tools.getDFA2(data.shift(), data.shift());
+                                timesecObj['timesecArr'].push(obj);
+                            }
                         }
+                        json.sinaArr.push(timesecObj)
                     }
-                    i += l
                 }
-                return {json: arr, key: 7 + i + l + 1};
+                return json
             },
 
             //厂休功控参数
             Fn42: function (data) {
                 var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    value: {
-                        facoff_fixed_value: tools.getDFA2(du[4], du[5]),
-                        facoff_hour: tools.bcd2b(du[7]),
-                        facoff_min: tools.bcd2b(du[6]),
-                        facoff_span: du[8],
-                        facoff_week0: du[9] % 2,
-                        facoff_week1: (du[9] >> 1) % 2,
-                        facoff_week2: (du[9] >> 2) % 2,
-                        facoff_week3: (du[9] >> 3) % 2,
-                        facoff_week4: (du[9] >> 4) % 2,
-                        facoff_week5: (du[9] >> 5) % 2,
-                        facoff_week6: (du[9] >> 6) % 2,
-                        facoff_week7: (du[9] >> 7) % 2
-                    }
+                    facoff_fixed_value: tools.getDFA2(data.shift(), data.shift()),
+                    facoff_min: tools.bcd2b(data.shift()),
+                    facoff_hour: tools.bcd2b(data.shift()),
+                    facoff_span: data.shift()
                 };
-                return {json: json, key: 10};
+                var weekNum = data.shift();
+                for (var i = 0; i < 8; i++) {
+                    json['facoff_week' + i] = (weekNum >> i) % 2;
+                }
+                return json
             },
 
             //营业报停控参数
             Fn44: function (data) {
                 var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    value: {
-                        buzstop_start_time: tools.getDFA20(du[4], du[5], du[6]),
-                        buzstop_end_time: tools.getDFA20(du[7], du[8], du[9]),
-                        buzstop_fixed_value: tools.getDFA2(du[10], du[11])
-                    }
+                    buzstop_start_time: tools.getDFA20(data.shift(), data.shift(), data.shift()),
+                    buzstop_end_time: tools.getDFA20(data.shift(), data.shift(), data.shift()),
+                    buzstop_fixed_value: tools.getDFA2(data.shift(), data.shift())
                 };
-                return {json: json, key: 12};
+                return json
             },
 
             //功控轮次设定
             Fn45: function (data) {
-                var round = _.toArray(du[4].toString(2)),
+                var round = _.toArray(data.shift().toString(2)),
                     json = {
                         round: round.reverse()
                     };
-                return {json: json, key: 5};
+                return json
             },
 
             //月电量控定值
             Fn46: function (data) {
                 var json = {
-                    pn: tools.getPn(du[0], du[1]),
-                    value: tools.getDFA3(du[4], du[5], du[6], du[7])
+                    value: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift())
                 };
-                return {json: json, key: 8};
+                return json
             },
 
             //购电量（费）控参数
             Fn47: function (data) {
                 var json = {
-                    pn: tools.getPn(du[0 + j], du[1 + j]),
-                    buyId: du[j + 4] + (du[j + 5] << 8) + (du[j + 6] << 16) + (du[j + 7] << 24),
-                    addFlag: du[j + 8] == 85 ? '追加' : '刷新',
-                    buyValue: tools.getDFA3(du[j + 9], du[j + 10], du[j + 11], du[j + 12]),
-                    alarmValue: tools.getDFA3(du[j + 13], du[j + 14], du[j + 15], du[j + 16]),
-                    jumpValue: tools.getDFA3(du[j + 17], du[j + 18], du[j + 19], du[j + 20])
+                    buyId: data.shift() + (data.shift() << 8) + (data.shift() << 16) + (data.shift() << 24),
+                    addFlag: data.shift() == 85 ? '追加' : '刷新',
+                    buyValue: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                    alarmValue: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift()),
+                    jumpValue: tools.getDFA3(data.shift(), data.shift(), data.shift(), data.shift())
                 };
-                return {json: json, key: 21};
+                return json;
             },
 
             //电控轮次设定
             Fn48: function (data) {
-                var round = _.toArray(du[4].toString(2)),
+                var round = _.toArray(data.shift().toString(2)),
                     json = {
                         round: round.reverse()
                     };
-                return {json: json, key: 5};
+                return json
             },
 
             //功控告警时间
             Fn49: function (data) {
-                var m = du.length / 5;
-                var arr = [];
-                for (var i = 0; i < m; i++) {
-                    var j = 5 * i;
-                    arr.push({
-                        pn: tools.getPn(du[0 + j], du[1 + j]),
-                        AlarmTime: du[j + 4]
-                    })
-                }
-                return {json: arr, key: 5};
+                return {alert: data.shift()}
             },
 
             //终端声音告警允许∕禁止设置
             Fn57: function (data) {
-                var t = du[4] + (du[5] << 8) + (du[6] << 16);
-                var arr = [];
+                var t = data.shift() + (data.shift() << 8) + (data.shift() << 16);
+                var json = [];
                 for (var i = 0; i < 24; i++) {
                     if ((t >> i) % 2 === 1)
-                        arr.push(i + ':00~' + (i + 1) + ':00允许警告');
+                        json.push(i + ':00~' + (i + 1) + ':00允许警告');
                 }
-                return {json: arr, key: 7};
+                return json;
             },
 
             //终端自动保电参数
             Fn58: function (data) {
-                return {json: du[4], key: 5};
+                return {value: data.shift()};
             },
 
             //电能表异常判别阈值设定
             Fn59: function (data) {
                 var json = {
-                    DiffoverLimit: tools.getDFA22(du[4]),
-                    fastLimit: tools.getDFA22(du[5]),
-                    stopLimit: du[6],
-                    adjLimit: du[7]
+                    DiffoverLimit: tools.getDFA22(data.shift()),
+                    fastLimit: tools.getDFA22(data.shift()),
+                    stopLimit: data.shift(),
+                    adjLimit: data.shift()
                 };
-                return {json: json, key: 8};
+                return json;
             },
 
             //谐波限值
             Fn60: function (data) {
-                var arr = {
-                    totalAbovlUplmt: tools.getDFA5(du[4], du[5]),
-                    oddAbovlUplmt: tools.getDFA5(du[6], du[7]),
-                    evenAbovlUplmt: tools.getDFA5(du[8], du[9])
+                var json = {
+                    totalAbovlUplmt: tools.getDFA5(data.shift(), data.shift()),
+                    oddAbovlUplmt: tools.getDFA5(data.shift(), data.shift()),
+                    evenAbovlUplmt: tools.getDFA5(data.shift(), data.shift())
                 };
                 for (var i = 2; i < 20; i += 2) {
-                    arr['exp' + i + 'AbvolUplmt'] = tools.getDFA5(du[9 + (i - 1)], du[9 + i]);
+                    json['exp' + i + 'AbvolUplmt'] = tools.getDFA5(data.shift(), data.shift());
                 }
                 for (var i = 3; i < 20; i += 2) {
-                    arr['exp' + i + 'AbvolUplmt'] = tools.getDFA5(du[26 + (i - 1)], du[26 + i]);
+                    json['exp' + i + 'AbvolUplmt'] = tools.getDFA5(data.shift(), data.shift());
                 }
-                arr['totalAbcurUplmt'] = tools.getDFA6(du[46], du[47]);
+                json['totalAbcurUplmt'] = tools.getDFA6(data.shift(), data.shift());
 
                 for (var i = 2; i < 20; i += 2) {
-                    arr['exp' + i + 'AbcurUplmt'] = tools.getDFA6(du[47 + (i - 1)], du[47 + i]);
+                    json['exp' + i + 'AbcurUplmt'] = tools.getDFA6(data.shift(), data.shift());
                 }
                 for (var i = 3; i < 20; i += 2) {
-                    arr['exp' + i + 'AbcurUplmt'] = tools.getDFA6(du[64 + (i - 1)], du[64 + i]);
+                    json['exp' + i + 'AbcurUplmt'] = tools.getDFA6(data.shift(), data.shift());
                 }
-                return {json: arr, key: 64 + i + 1};
+                return json
             },
 
             //直流模拟量接入参数
             Fn61: function (data) {
-                var round = _.toArray(du[4].toString(2));
-                return {json: {round: round.reverse()}, key: 5};
+                var round = _.toArray(data.shift().toString(2));
+                return {json: round.reverse()};
             },
 
-            //直流模拟量接入参数
+            //定时上报1类数据任务启动/停止设置
             Fn67: function (data) {
-                return {json: du[4], key: 5};
+                return {value: data.shift()};
             },
 
             //定时上报2类数据任务启动/停止设置
             Fn68: function (data) {
-                return {json: du[4], key: 5};
+                return {value: data.shift()};
             }
         },
         AFN11: {},
@@ -1865,21 +2615,36 @@ var json_hex = {
             //终端当前控制状态
             //TODO what the fuck?
             Fn6: function (data) {
-                var arr = data.splice(0, 67);
-                var round = _.toArray(arr.toString(2)),
+                var tgStatusArr = data.shift();
+                var round = _.toArray(tgStatusArr.toString(2)),
                     json = {
-                        round: round.reverse()
+                        round: round.reverse(),
+                        alertStatus: data.shift(),
+                        tgArr: []
                     };
-                /*
-                 00 00 20 00
-                 00 00 1F
-                 EE 2E 00 00 00 01 00 00
-                 EE 2E 00 00 00 00 00 00
-                 EE 2E 00 00 00 00 00 00
-                 EE 2E 00 00 00 00 00 00
-                 EE 2E 00 00 00 00 00 00
-                 */
-                return {json: json, key: 71};
+                var signData = data.shift();
+                for (var i = 0; i < 8; i++) {
+                    if ((signData >> i) % 2 === 1) {
+                        var obj = {
+                            tgSignNo: i + 1,
+                            powerCtrlValue: tools.getDFA2(data.shift(), data.shift()),
+                            powerDownCoe: tools.getDFA4(data.shift()),
+                            tcJumpFlag: _.toArray(data.shift().toString(2)).reverse(),
+                            mcJumpFlag: _.toArray(data.shift().toString(2)).reverse(),
+                            bcJumpFlag: _.toArray(data.shift().toString(2)).reverse()
+                        };
+                        var pcAlarmFlag = data.shift();
+                        var ecAlarmFlag = data.shift();
+                        obj['timesec'] = pcAlarmFlag % 2;
+                        obj['facoff'] = (pcAlarmFlag >> 1) % 2;
+                        obj['Buzstop'] = (pcAlarmFlag >> 2) % 2;
+                        obj['powerDown'] = (pcAlarmFlag >> 3) % 2;
+                        obj['mc'] = ecAlarmFlag % 2;
+                        obj['bc'] = (ecAlarmFlag >> 1) % 2;
+                        json.tgArr.push(obj)
+                    }
+                }
+                return json;
             },
             //当前总加有功功率
             Fn17: function (data) {
@@ -1923,7 +2688,6 @@ var json_hex = {
                 }
                 return json;
             },
-
             //当月总加有功电能量（总、费率1～M）
             Fn21: function (data) {
                 var json = {};
@@ -3257,23 +4021,23 @@ var json_hex = {
                 json.trans_length = arr.shift() + (arr.shift() >> 8);
                 json.trans = _645._07.hex_json(data);
                 /*
-                            00 00 01 00 1F 12 00 68 85 03 00 62 64 12 68 81 06 43 C3 35 33 33 33 8B 16
-                            var b = a.splice(7, parseInt(a[5], 16))
-                    var errFrame = false, arr = du.slice(7, du.length), tFrame;
+                 00 00 01 00 1F 12 00 68 85 03 00 62 64 12 68 81 06 43 C3 35 33 33 33 8B 16
+                 var b = a.splice(7, parseInt(a[5], 16))
+                 var errFrame = false, arr = du.slice(7, du.length), tFrame;
 
-                    if (arr[0] === 0xfe) {
-                        tFrame = arr.slice(3, arr.length);
-                    } else {
-                    tFrame = arr;
-                    }
-                    var headIndex = tFrame.indexOf(0x68);
-                    if (tFrame[tFrame.length - 2] != tools.setCS(tFrame.slice(headIndex, tFrame.length - 2))) {
-                        errFrame = true;
-                    }
+                 if (arr[0] === 0xfe) {
+                 tFrame = arr.slice(3, arr.length);
+                 } else {
+                 tFrame = arr;
+                 }
+                 var headIndex = tFrame.indexOf(0x68);
+                 if (tFrame[tFrame.length - 2] != tools.setCS(tFrame.slice(headIndex, tFrame.length - 2))) {
+                 errFrame = true;
+                 }
 
-                    var json = {comm_port: du[4], count: du[5] + (du[6] >> 8), tFrame: tFrame, errFrame: errFrame};
-                    return {json: json, key: 7 + json.count};
-                */
+                 var json = {comm_port: du[4], count: du[5] + (du[6] >> 8), tFrame: tFrame, errFrame: errFrame};
+                 return {json: json, key: 7 + json.count};
+                 */
             }
         }
     },

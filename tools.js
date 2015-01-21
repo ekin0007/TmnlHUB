@@ -2,6 +2,14 @@ var _ = require('underscore'),
     moment = require('moment');
 
 exports.tools = {
+    asc: function (str) {
+        var value = [];
+        for (var i = 0; i < str.length; i++) {
+            value.push('0X' + str.charCodeAt(i).toString(16));
+        }
+        return value;
+
+    },
 
     now: function (format) {
         return moment().format(format || 'YYYY-MM-DD HH:mm:ss');
@@ -525,6 +533,15 @@ exports.tools = {
             this.b2bcd(Math.floor(data.ene_value[0] / 100) % 100),
             this.b2bcd(Math.floor(data.ene_value[0] / 10000) % 100),
             this.b2bcd(Math.floor(data.ene_value[0] / 1000000) % 100) + (data.ene_value[1] << 6)]
+
+    },
+
+    setDFA4: function (data) {
+        var arr = (data.power_down_coe_unit << 7)
+            + (Math.floor(data.power_down_coe_value / 10) << 4 )
+            + (data.power_down_coe_value % 10);
+        console.log(arr)
+        return arr
 
     },
 
